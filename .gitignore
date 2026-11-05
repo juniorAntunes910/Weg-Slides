@@ -1,0 +1,23 @@
+# Log do servidor local (reescrito a cada inicialização)
+servidor.log
+*.log
+
+# Projetos excluídos pelo app (lixeira local)
+projetos/_lixeira/
+
+# Dependências e temporários
+node_modules/
+*.tmp
+
+# Segredos e configuração local
+.env
+.env.*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
