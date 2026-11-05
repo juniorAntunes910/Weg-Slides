@@ -56,7 +56,7 @@ const step = m => console.log('› ' + m);
   try { fs.rmSync(EXE, { force: true }); } catch (e) { throw new Error('Feche o Slide Studio WEG.exe antes de gerar de novo.'); }
   fs.copyFileSync(process.execPath, EXE);
   // ícone e nome do programa (antes de injetar o app: o rcedit reescreve os recursos do .exe)
-  const strings = { FileDescription: 'Slide Studio WEG', ProductName: 'Slide Studio WEG', CompanyName: 'Slide Studio WEG', OriginalFilename: 'Slide Studio WEG.exe', InternalName: 'SlideStudioWEG', LegalCopyright: ' ' };
+  const strings = { FileDescription: 'Slide Studio WEG', ProductName: 'Slide Studio WEG', CompanyName: 'Slide Studio WEG', OriginalFilename: 'Slide Studio WEG.exe', InternalName: 'SlideStudioWEG', LegalCopyright: '© 2026 Junior Antunes' };
   const rcArgs = [EXE, '--set-icon', path.join(ROOT, 'slide-studio-weg.ico'), '--set-file-version', VERSION, '--set-product-version', VERSION];
   Object.entries(strings).forEach(([k, v]) => rcArgs.push('--set-version-string', k, v));
   execFileSync(path.join(TOOLS, 'node_modules', 'rcedit', 'bin', 'rcedit-x64.exe'), rcArgs, { stdio: 'inherit' });

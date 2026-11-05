@@ -391,6 +391,7 @@ svg.lucide { width: 18px; height: 18px; stroke-width: 2; flex: none; }
 .proj .pdel { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: var(--r); background: rgba(15,23,42,.7); color: #fff; display: none; place-items: center; }
 .proj:hover .pdel { display: grid; }
 .proj .pdel svg.lucide { width: 15px; height: 15px; }
+.home-footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; font-size: 12px; color: var(--ink-3); }
 .empty-note { text-align: center; color: var(--ink-3); padding: 30px; border: 1.5px dashed #CBD5E1; border-radius: 16px; background: rgba(255,255,255,.5); }
 .panel-proj { display: flex; flex-direction: column; gap: 10px; }
 .panel-proj .proj { display: grid; grid-template-columns: 112px 1fr; align-items: center; }
