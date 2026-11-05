@@ -39,7 +39,10 @@ const MAX_BODY = 50 * 1024 * 1024;
 // Ferramentas que o Kiro pode usar sem pedir confirmação: apenas ler o prompt e pesquisar na web.
 // Sem escrita de arquivos e sem acesso a URLs arbitrárias (anexos podem conter instruções maliciosas).
 // O HTML é capturado da resposta do Kiro e gravado pelo próprio servidor.
-const TRUSTED_TOOLS = ['read_file', 'remote_web_search'];
+// Obs.: o nome interno da busca na web no --trust-tools do Kiro CLI é "web_search" (não "remote_web_search",
+// que é só o nome exposto via ACP). Sem o nome certo, a busca cai no pedido de permissão interativo e,
+// no modo stream-json não interativo, falha com "tool permission approval is not supported".
+const TRUSTED_TOOLS = ['read_file', 'web_search'];
 const MAX_RESPONSE_CHARS = 3 * 1024 * 1024;
 
 const MIME = {
