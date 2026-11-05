@@ -232,7 +232,7 @@ function handleEvent(job, ev) {
 // kind 'deck': gera uma apresentação nova em projetos/<id>/
 // kind 'slide': reescreve um único slide numa pasta temporária (resultado volta para o app, nada é gravado em projetos/;
 // só os créditos gastos entram no meta.json do projeto aberto, quando o app informa qual é)
-function startJob({ prompt, title, kind, projectId }) {
+function startJob({ prompt, title, kind, projectId, model }) {
   kind = kind === 'slide' ? 'slide' : 'deck';
   const id = kind === 'slide' ? 'slide-' + Date.now().toString(36) + crypto.randomBytes(3).toString('hex') : newProjectId(title);
   const dir = kind === 'slide' ? fs.mkdtempSync(path.join(os.tmpdir(), 'ssw-slide-')) : projectPath(id);
@@ -257,7 +257,12 @@ function startJob({ prompt, title, kind, projectId }) {
       'Sua resposta final deve ser SOMENTE o documento HTML completo, de <!DOCTYPE html> até </html>, ' +
       'sem markdown e sem texto antes ou depois.';
 
-  const args = ['chat', '--output-format', 'stream-json', '--trust-tools=' + TRUSTED_TOOLS.join(','), instruction];
+  // Modelo do Kiro: só aceita ids válidos (letras, números, ponto, hífen). 'auto' ou vazio usa o padrão do CLI.
+  const kiroModel = typeof model === 'string' && /^[a-z0-9][a-z0-9.\-]{0,60}$/i.test(model) && model !== 'auto' ? model : null;
+  const args = ['chat', '--output-format', 'stream-json'];
+  if (kiroModel) args.push('--model', kiroModel);
+  args.push('--trust-tools=' + TRUSTED_TOOLS.join(','), instruction);
+  if (kiroModel) pushLog(job, { kind: 'info', text: 'Modelo do Kiro: ' + kiroModel });
   let proc;
   try {
     proc = spawn(KIRO, args, { cwd: dir, windowsHide: true, env: process.env });
@@ -441,6 +446,40 @@ function getKiroUsage(fresh) {
     return kiroUsage.data;
   }).finally(() => { kiroUsage.pending = null; });
   return kiroUsage.pending;
+}
+
+/* ---------------- Catálogo de modelos do Kiro ---------------- */
+// Lido do `kiro-cli chat --list-models --format json`. Fica em cache (os modelos quase não mudam).
+// Cada item: { id, label, description, rate } — rate = multiplicador de créditos (ex.: 1.3x).
+const kiroModels = { list: null, default: 'auto', at: 0, pending: null };
+const KIRO_MODELS_TTL_MS = 30 * 60 * 1000;
+function runKiroModels() {
+  return new Promise(resolve => {
+    execFile(KIRO, ['chat', '--list-models', '--format', 'json'], { windowsHide: true, timeout: 30000, maxBuffer: 1024 * 1024 }, (err, stdout, stderr) => {
+      try {
+        const data = JSON.parse(String(stdout || '').trim());
+        const list = (data.models || []).map(m => ({
+          id: m.model_id || m.model_name,
+          label: m.model_name || m.model_id,
+          description: m.description || '',
+          rate: typeof m.rate_multiplier === 'number' ? m.rate_multiplier : null
+        })).filter(m => m.id);
+        if (list.length) return resolve({ models: list, default: data.default_model || 'auto' });
+      } catch (e) { /* saída não-JSON */ }
+      const out = String(stdout || '') + '\n' + String(stderr || '');
+      resolve({ error: /login|log in|sign in|auth|token|expired/i.test(out) ? 'Entre no Kiro (kiro-cli login) para ver os modelos.' : 'Não foi possível listar os modelos do Kiro.' });
+    });
+  });
+}
+/** catálogo de modelos do Kiro, do cache quando recente; leituras simultâneas esperam a mesma execução do CLI */
+function getKiroModels(fresh) {
+  if (kiroModels.pending) return kiroModels.pending;
+  if (!fresh && kiroModels.list && Date.now() - kiroModels.at < KIRO_MODELS_TTL_MS) return Promise.resolve({ models: kiroModels.list, default: kiroModels.default });
+  kiroModels.pending = runKiroModels().then(d => {
+    if (d.models) { kiroModels.list = d.models; kiroModels.default = d.default; kiroModels.at = Date.now(); }
+    return d;
+  }).finally(() => { kiroModels.pending = null; });
+  return kiroModels.pending;
 }
 
 /* ---------------- Projetos ---------------- */
@@ -711,7 +750,7 @@ async function handleApi(req, res, url) {
     if (runningJobId) return send(res, 409, { error: 'Já existe uma geração em andamento.', jobId: runningJobId });
     const body = await readBody(req);
     if (!body.prompt || typeof body.prompt !== 'string') return send(res, 400, { error: 'Prompt ausente' });
-    const job = startJob({ prompt: body.prompt, title: String(body.title || '').slice(0, 120) });
+    const job = startJob({ prompt: body.prompt, title: String(body.title || '').slice(0, 120), model: body.model });
     return send(res, 200, { jobId: job.id });
   }
   if (req.method === 'POST' && parts[1] === 'edit-slide') {
@@ -719,13 +758,19 @@ async function handleApi(req, res, url) {
     if (runningJobId) return send(res, 409, { error: 'O Kiro já está trabalhando em outro pedido. Aguarde terminar.', jobId: runningJobId });
     const body = await readBody(req);
     if (!body.prompt || typeof body.prompt !== 'string') return send(res, 400, { error: 'Prompt ausente' });
-    const job = startJob({ prompt: body.prompt, title: 'Editar slide', kind: 'slide', projectId: typeof body.projectId === 'string' ? body.projectId : null });
+    const job = startJob({ prompt: body.prompt, title: 'Editar slide', kind: 'slide', projectId: typeof body.projectId === 'string' ? body.projectId : null, model: body.model });
     return send(res, 200, { jobId: job.id });
   }
   if (req.method === 'GET' && parts[1] === 'kiro-usage') {
     // GET /api/kiro-usage[?fresh=1] → { available, plan, used, limit, percent, resetsOn, bonus, updatedAt, error?, stale? }
     if (!KIRO) return send(res, 200, { available: false });
     const data = await getKiroUsage(url.searchParams.get('fresh') === '1');
+    return send(res, 200, Object.assign({ available: true }, data));
+  }
+  if (req.method === 'GET' && parts[1] === 'kiro-models') {
+    // GET /api/kiro-models[?fresh=1] → { available, models:[{id,label,description,rate}], default, error? }
+    if (!KIRO) return send(res, 200, { available: false });
+    const data = await getKiroModels(url.searchParams.get('fresh') === '1');
     return send(res, 200, Object.assign({ available: true }, data));
   }
   if (parts[1] === 'jobs' && parts[2]) {
