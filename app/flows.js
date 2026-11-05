@@ -126,7 +126,19 @@
       '<div class="pm"><div class="pt" title="' + esc(p.title) + '">' + esc(p.title) + '</div><div class="pd"><span>' + esc(fmtDate(p.updatedAt || p.createdAt)) + '</span>' + (n ? '<span>·</span><span>' + esc(n) + '</span>' : '') + cr + '</div></div>' +
       '<button class="pdel" title="Excluir" aria-label="Excluir projeto"><i data-lucide="trash-2"></i></button></div>';
   }
-  function renderProjects() {
+  // Assinatura do que afeta os cartões: enquanto não muda, não reconstruímos a grade.
+  // Reconstruir via innerHTML destrói os .th-host e faz o IntersectionObserver recarregar as miniaturas
+  // (iframes) — era isso que fazia os projetos recentes "piscarem" a cada refreshProjects (health, setView, openPanel).
+  let lastProjectsSig = null;
+  function projectsSignature() {
+    const state = (!SERVED ? 'file' : !server.ok ? 'off' : 'ok');
+    const usable = projects.filter(p => p.hasHtml || p.status === 'running');
+    return state + '|' + usable.map(p => [p.id, p.title, p.status, p.slides, p.credits, p.hasHtml ? 1 : 0, p.updatedAt || p.createdAt].join('~')).join('||');
+  }
+  function renderProjects(force) {
+    const sig = projectsSignature();
+    if (!force && sig === lastProjectsSig) return; // nada mudou: preserva as miniaturas já carregadas
+    lastProjectsSig = sig;
     const usable = projects.filter(p => p.hasHtml || p.status === 'running');
     const empty = !SERVED ? '<div class="empty-note">Abra pelo atalho <b>Slide Studio WEG</b> para salvar e listar projetos.</div>'
       : '<div class="empty-note">Nenhum projeto ainda. Gere com a IA ou crie uma apresentação em branco.</div>';
