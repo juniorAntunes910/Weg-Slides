@@ -109,6 +109,40 @@
   /** modelos para seguir se o escolhido estiver sobrecarregado ou sem cota (só Gemini) */
   function backupModels(p, model) { return SSWAI.backupModels(p, modelCatalog[p], model); }
 
+  /* ---------------- modelos do Kiro (lidos do CLI pelo servidor) ---------------- */
+  const kiroModels = { list: null, default: 'auto', loaded: false, loading: false };
+  function currentKiroModel() { return (localStorage.getItem('ssw_kiro_model') || '').trim() || 'auto'; }
+  async function refreshKiroModels(fresh) {
+    const status = $('#kiroModelStatus');
+    if (!SERVED || !server.kiro) { if (status) status.textContent = ''; return; }
+    if (kiroModels.loading) return;
+    kiroModels.loading = true;
+    if (!kiroModels.loaded && status) status.textContent = 'Consultando os modelos do Kiro…';
+    try {
+      const r = await api('/api/kiro-models' + (fresh ? '?fresh=1' : ''));
+      if (r.error) { if (status) status.innerHTML = '<span class="warn-text">' + esc(r.error) + '</span>'; return; }
+      kiroModels.list = r.models || []; kiroModels.default = r.default || 'auto'; kiroModels.loaded = true;
+    } catch (e) { if (status) status.innerHTML = '<span class="warn-text">' + esc(e.message) + '</span>'; return; }
+    finally { kiroModels.loading = false; }
+    renderKiroModels();
+  }
+  function renderKiroModels() {
+    const sel = $('#kiroModelInput'), status = $('#kiroModelStatus');
+    if (!sel || !kiroModels.list) return;
+    let cur = currentKiroModel();
+    if (!kiroModels.list.some(m => m.id === cur)) cur = kiroModels.default;
+    sel.innerHTML = kiroModels.list.map(m => {
+      const rate = m.rate != null ? ' · ' + m.rate.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + 'x créditos' : '';
+      const def = m.id === kiroModels.default ? ' (padrão)' : '';
+      return '<option value="' + esc(m.id) + '">' + esc(m.label) + def + rate + '</option>';
+    }).join('');
+    sel.value = cur;
+    const m = kiroModels.list.find(x => x.id === cur);
+    if (status) status.textContent = m ? (m.id === 'auto' ? m.description : (m.description || m.label) + (m.rate != null ? ' · ' + m.rate.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + 'x créditos' : '')) : '';
+  }
+  /** modelo do Kiro a enviar na geração ('auto' vira null no servidor, que usa o padrão do CLI) */
+  function resolveKiroModel() { return currentKiroModel(); }
+
   /* ======================= servidor ======================= */
   async function api(path, opts) {
     opts = opts || {};
@@ -352,6 +386,7 @@
     $('#toneSelect').value = cfg.tone; $('#toneSelect').onchange = e => { cfg.tone = e.target.value; saveCfg(); };
 
     $$('#engineSeg button').forEach(b => b.onclick = () => { cfg.engine = b.dataset.engine; saveCfg(); renderEngine(); });
+    $('#kiroModelInput').onchange = e => { localStorage.setItem('ssw_kiro_model', e.target.value); renderKiroModels(); };
     $('#providerSelect').onchange = e => { cfg.provider = e.target.value; saveCfg(); renderEngine(); };
     $('#modelInput').onchange = e => { localStorage.setItem('ssw_model_' + cfg.provider, e.target.value.trim()); refreshModels(cfg.provider); };
     $('#apiKeyInput').onchange = async e => {
@@ -376,6 +411,8 @@
       if (b.dataset.engine === 'kiro') { b.disabled = server.checked && !server.kiro; b.title = b.disabled ? 'Kiro indisponível' : 'Gerar com o Kiro CLI'; }
     });
     $('#apiBox').classList.toggle('hidden', cfg.engine !== 'api');
+    $('#kiroBox').classList.toggle('hidden', !(cfg.engine === 'kiro' && SERVED && server.kiro));
+    if (cfg.engine === 'kiro' && SERVED && server.kiro) { if (kiroModels.loaded) renderKiroModels(); else refreshKiroModels(); }
     $('#providerSelect').value = cfg.provider;
     $('#modelInput').value = currentModel(cfg.provider);
     $('#modelInput').placeholder = 'Recomendado (escolhido automaticamente)';
@@ -662,7 +699,7 @@
     setView, renderPageHead, enableDeckUi, openPanel, setPanelOpen, bindGenerateForm, renderEngine, renderConn, checkServer,
     addAttachments, renderFiles, addUploads, renderUploads, renderShapes, renderIconGrid, endIconReplace, renderLayouts, renderStyle, bindStyle,
     pickFile, bindDropzone, payloadHtml, insertElement, logoSvg, docColors, nextUid, MODEL_DEFAULTS,
-    keys, loadKeys, getApiKey, hasApiKey, resolveModel, backupModels, saveCfg, refreshKiroUsage, fmtCredits, creditsText,
+    keys, loadKeys, getApiKey, hasApiKey, resolveModel, backupModels, resolveKiroModel, refreshKiroModels, saveCfg, refreshKiroUsage, fmtCredits, creditsText,
     get view() { return view; }, set deckPalette(v) { deckPalette = v; }
   };
   // funções definidas na parte 2 (hoisting via window.__SSW2)

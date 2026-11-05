@@ -271,7 +271,7 @@
     if (!server.kiro) return promptModal(prompt, 'O Kiro não está disponível agora. Copie o prompt e cole em qualquer IA.');
     if (!(await confirmDataSend('kiro', 'O pedido da apresentação'))) return;
     try {
-      const r = await api('/api/generate', { method: 'POST', body: { prompt, title: theme.slice(0, 120) } });
+      const r = await api('/api/generate', { method: 'POST', body: { prompt, title: theme.slice(0, 120), model: S.resolveKiroModel() } });
       attachJob(r.jobId, theme);
     } catch (e) {
       if (e.status === 409 && e.data && e.data.jobId) { attachJob(e.data.jobId, theme); return; }
@@ -513,7 +513,7 @@
   async function kiroSlide(prompt) {
     let r;
     // o id do projeto aberto faz os créditos desta edição somarem no total da apresentação
-    try { r = await api('/api/edit-slide', { method: 'POST', body: { prompt, projectId: project.id || null } }); }
+    try { r = await api('/api/edit-slide', { method: 'POST', body: { prompt, projectId: project.id || null, model: S.resolveKiroModel() } }); }
     catch (e) { throw new Error(e.status === 409 ? 'o Kiro já está trabalhando em outro pedido' : e.message); }
     aiState.jobId = r.jobId;
     let since = 0;
