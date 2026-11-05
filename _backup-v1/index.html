@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide Studio WEG — Gerador de Apresentações</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {50:'#F0F8FF',100:'#DFEFFF',200:'#B9E0FE',300:'#7BC8FE',400:'#34ACFC',500:'#0A92ED',600:'#0072CB',700:'#00579D',800:'#054E87',900:'#0A4170'},
+        secondary: {50:'#FFFBEA',100:'#FFF5C5',200:'#FFEA87',300:'#FFD848',400:'#FFC51E',500:'#FCA304',600:'#EF8300',700:'#B95404',800:'#96410A',900:'#7B350C'},
+        tertiary: {50:'#FAF7FC',100:'#F3EFF8',200:'#E7DFEF',300:'#D5C5E2',400:'#BCA1D1',500:'#9F7BBA',600:'#8862A2',700:'#6C4A81',800:'#593E6A',900:'#4C3758'},
+        positive: {50:'#EFFEF5',100:'#D9FFE9',200:'#7DF8B2',300:'#7DF8B2',400:'#3DEB89',500:'#13CE66',600:'#09B054',700:'#0B8A45',800:'#0F6C39',900:'#0E5932'},
+        negative: {50:'#FFF1F1',100:'#FFDFDF',200:'#FFC5C5',300:'#FF9D9D',400:'#FF6464',500:'#FF4949',600:'#ED1515',700:'#C80D0D',800:'#A50F0F',900:'#881414'},
+        neutral: {50:'#F8FAFC',100:'#F1F5F9',200:'#E2E8F0',300:'#CBD5E1',400:'#94A3B8',500:'#64748B',600:'#475569',700:'#334155',800:'#1E293B',900:'#0F172A'}
+      },
+      fontFamily: { sans: ['Inter','sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+  .swatch{height:20px;flex:1;transition:flex .15s ease}
+  .swatch:hover{flex:1.6}
+  .dropzone-active{border-color:#00579D;background:#F0F8FF}
+  .tab-btn{border-bottom:2px solid transparent;color:#64748B}
+  .tab-btn.tab-active{border-color:#00579D;color:#00579D;font-weight:600}
+  details>summary{cursor:pointer;list-style:none}
+  details>summary::-webkit-details-marker{display:none}
+  details[open] .chev{transform:rotate(90deg)}
+  .chev{transition:transform .15s ease}
+  input[type="color"]{padding:0;border:none;background:none;width:36px;height:28px;cursor:pointer}
+  input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
+  input[type="color"]::-webkit-color-swatch{border:1px solid #CBD5E1;border-radius:6px}
+</style>
+</head>
+<body class="bg-neutral-100 text-neutral-800 font-sans min-h-screen">
+
+<!-- ===================== HEADER ===================== -->
+<header class="bg-white border-b border-neutral-200 sticky top-0 z-20">
+  <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" class="h-8 w-auto shrink-0">
+      <g fill="#0064A6">
+        <polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/>
+        <path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/>
+        <path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/>
+      </g>
+    </svg>
+    <div>
+      <h1 class="text-lg font-bold text-primary-700 leading-tight">Slide Studio WEG</h1>
+      <p class="text-xs text-neutral-500">Gerador de apresentações corporativas — configure, informe o tema, gere e edite</p>
+    </div>
+    <div class="ml-auto hidden md:flex items-center gap-2 text-xs text-neutral-400">
+      <i data-lucide="shield-check" class="w-4 h-4"></i>
+      <span>Tudo roda no seu navegador. Nada é enviado a servidores além da API de IA que você escolher.</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1600px] mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+<!-- ===================== COLUNA 1: CONFIGURAÇÃO ===================== -->
+<section class="lg:col-span-3 space-y-4">
+
+  <!-- Paleta -->
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="palette" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Paleta de cores</h2>
+    </div>
+    <div id="presetRow" class="grid grid-cols-2 gap-2 mb-4"></div>
+    <div class="space-y-3">
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs font-medium text-neutral-600">Primária (marca)</label>
+          <input type="color" id="colorPrimary" value="#00579D">
+        </div>
+        <div class="flex rounded overflow-hidden" id="scalePrimary"></div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs font-medium text-neutral-600">Secundária (destaque)</label>
+          <input type="color" id="colorSecondary" value="#FCA304">
+        </div>
+        <div class="flex rounded overflow-hidden" id="scaleSecondary"></div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs font-medium text-neutral-600">Terciária (apoio)</label>
+          <input type="color" id="colorTertiary" value="#9F7BBA">
+        </div>
+        <div class="flex rounded overflow-hidden" id="scaleTertiary"></div>
+      </div>
+    </div>
+    <p class="text-[11px] text-neutral-400 mt-3">A escala 50–900 é gerada automaticamente. As cores semânticas (sucesso, erro, alerta, info) seguem o padrão WEG.</p>
+  </div>
+
+  <!-- Tipografia -->
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="type" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Tipografia</h2>
+    </div>
+    <select id="fontSelect" class="w-full text-sm border border-neutral-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary-300">
+      <option>Inter</option>
+      <option>Roboto</option>
+      <option>Montserrat</option>
+      <option>Open Sans</option>
+      <option>Poppins</option>
+      <option>IBM Plex Sans</option>
+    </select>
+    <div id="fontPreview" class="mt-3 border border-neutral-200 rounded-md p-3 bg-neutral-50">
+      <p class="text-xl font-bold" id="fontPreviewTitle">Título da apresentação</p>
+      <p class="text-sm font-light mt-1">Texto de apoio com hierarquia clara.</p>
+    </div>
+  </div>
+
+  <!-- Estrutura -->
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="layout-list" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Estrutura</h2>
+    </div>
+    <div class="flex items-center justify-between mb-1">
+      <label class="text-xs font-medium text-neutral-600">Quantidade de slides</label>
+      <span id="slideCountLabel" class="text-xs font-bold text-primary-700">12</span>
+    </div>
+    <input type="range" id="slideCount" min="6" max="16" value="12" class="w-full accent-primary-700">
+    <div class="grid grid-cols-2 gap-2 mt-3">
+      <div>
+        <label class="text-xs font-medium text-neutral-600">Idioma</label>
+        <select id="langSelect" class="mt-1 w-full text-sm border border-neutral-300 rounded-md px-2 py-1.5">
+          <option value="pt-BR">Português (BR)</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs font-medium text-neutral-600">Tom de voz</label>
+        <select id="toneSelect" class="mt-1 w-full text-sm border border-neutral-300 rounded-md px-2 py-1.5">
+          <option>Corporativo</option>
+          <option>Executivo</option>
+          <option>Técnico</option>
+          <option>Inspirador</option>
+          <option>Comercial</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Componentes -->
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="component" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Componentes da apresentação</h2>
+    </div>
+    <div class="space-y-2 text-sm">
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="progressbar" checked><i data-lucide="gauge" class="w-4 h-4 text-neutral-500"></i>Barra de progresso no topo</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="pagination" checked><i data-lucide="chevrons-left-right" class="w-4 h-4 text-neutral-500"></i>Paginação + botões Anterior/Próximo</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="swipe" checked><i data-lucide="move-horizontal" class="w-4 h-4 text-neutral-500"></i>Navegação por swipe (mobile)</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="darkmode"><i data-lucide="moon" class="w-4 h-4 text-neutral-500"></i>Botão modo claro/escuro</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="counters" checked><i data-lucide="hash" class="w-4 h-4 text-neutral-500"></i>Números com animação de contagem</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="timeline"><i data-lucide="milestone" class="w-4 h-4 text-neutral-500"></i>Timeline visual (roadmap/histórico)</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="comp accent-primary-700" value="compareCards" checked><i data-lucide="columns-2" class="w-4 h-4 text-neutral-500"></i>Cards comparativos (antes vs depois)</label>
+    </div>
+    <p class="text-[11px] text-neutral-400 mt-3">Sempre incluídos: navegação por teclado, transições fade, slide de capa e encerramento, responsividade.</p>
+  </div>
+
+  <!-- Logo -->
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="image" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Logo</h2>
+    </div>
+    <label class="flex items-center gap-2 text-sm"><input type="radio" name="logoType" value="weg" checked class="accent-primary-700">Logo WEG (padrão)</label>
+    <label class="flex items-center gap-2 text-sm mt-2"><input type="radio" name="logoType" value="custom" class="accent-primary-700">Logo próprio (apenas SVG, até 50 KB)</label>
+    <div id="logoUploadWrap" class="mt-2 hidden">
+      <input type="file" id="logoFile" accept=".svg" class="text-xs w-full">
+      <p id="logoStatus" class="text-[11px] mt-1 text-neutral-400"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COLUNA 2: ENTRADA ===================== -->
+<section class="lg:col-span-4 space-y-4">
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="file-text" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Tema da apresentação <span class="text-negative-600">*</span></h2>
+    </div>
+    <textarea id="themeInput" rows="3" class="w-full text-sm border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-300" placeholder="Ex.: Eficiência energética em motores industriais — portfólio WEG W22 e economia de energia no chão de fábrica"></textarea>
+    <div class="grid grid-cols-1 gap-3 mt-3">
+      <div>
+        <label class="text-xs font-medium text-neutral-600">Público-alvo</label>
+        <input id="audienceInput" type="text" class="mt-1 w-full text-sm border border-neutral-300 rounded-md px-3 py-2" placeholder="Ex.: diretoria industrial, equipe comercial, clientes finais">
+      </div>
+      <div>
+        <label class="text-xs font-medium text-neutral-600">Contexto adicional (dados, recados, restrições)</label>
+        <textarea id="contextInput" rows="4" class="mt-1 w-full text-sm border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-300" placeholder="Cole aqui números, citações, tópicos obrigatórios, ou texto extraído de PDFs..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="paperclip" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Anexos</h2>
+    </div>
+    <div id="dropzone" class="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center cursor-pointer transition-colors">
+      <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-neutral-400"></i>
+      <p class="text-sm text-neutral-600 mt-2">Arraste arquivos ou <span class="text-primary-700 font-medium">clique para escolher</span></p>
+      <p class="text-[11px] text-neutral-400 mt-1">Formatos: .txt, .md, .csv, .json, .log — o conteúdo entra integralmente no prompt</p>
+      <input type="file" id="fileInput" class="hidden" multiple accept=".txt,.md,.csv,.json,.log">
+    </div>
+    <ul id="fileList" class="mt-3 space-y-1"></ul>
+    <p class="text-[11px] text-neutral-400 mt-2">PDF não é lido diretamente: copie o texto do PDF e cole em "Contexto adicional". Arquivos muito longos são truncados em 100 mil caracteres.</p>
+  </div>
+
+  <div class="bg-primary-50 border border-primary-200 rounded-lg p-4">
+    <div class="flex items-start gap-2">
+      <i data-lucide="lightbulb" class="w-4 h-4 text-primary-700 mt-0.5 shrink-0"></i>
+      <p class="text-xs text-primary-900">Quanto mais contexto você der (dados reais, público, recado principal), melhor a apresentação. A IA segue a Regra dos 3 de Steve Jobs: três mensagens centrais, uma ideia por slide, texto mínimo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COLUNA 3: SAÍDA ===================== -->
+<section class="lg:col-span-5 space-y-4">
+
+  <!-- Geração -->
+  <div class="bg-white rounded-lg border border-neutral-200 p-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="sparkles" class="w-4 h-4 text-primary-700"></i>
+      <h2 class="font-semibold text-sm">Geração</h2>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2">
+      <button id="kiroBtn" class="flex items-center justify-center gap-2 bg-primary-700 hover:bg-primary-800 text-white text-sm font-semibold rounded-md px-3 py-2.5 transition-colors">
+        <i data-lucide="bot" class="w-4 h-4"></i>Gerar com Kiro
+      </button>
+      <button id="genBtn" class="flex items-center justify-center gap-2 border border-primary-700 text-primary-700 hover:bg-primary-50 text-sm font-semibold rounded-md px-3 py-2.5 transition-colors">
+        <i data-lucide="zap" class="w-4 h-4"></i>Gerar via API
+      </button>
+      <button id="copyBtn" class="flex items-center justify-center gap-2 border border-neutral-300 text-neutral-700 hover:bg-neutral-50 text-sm font-medium rounded-md px-3 py-2 transition-colors">
+        <i data-lucide="copy" class="w-4 h-4"></i>Copiar prompt
+      </button>
+      <button id="downloadPromptBtn" class="flex items-center justify-center gap-2 border border-neutral-300 text-neutral-700 hover:bg-neutral-50 text-sm font-medium rounded-md px-3 py-2 transition-colors">
+        <i data-lucide="download" class="w-4 h-4"></i>Baixar prompt (.md)
+      </button>
+    </div>
+
+    <!-- Integração Kiro -->
+    <div class="mt-3 bg-primary-50 border border-primary-200 rounded-md p-3">
+      <div class="flex items-center justify-between gap-2">
+        <p class="text-xs text-primary-900"><strong>Gerar com Kiro:</strong> salva o prompt pronto como <code class="bg-white px-1 rounded">prompt-gerado.md</code> na pasta do projeto. Depois é só me dizer: <em>"gere a apresentação a partir do prompt-gerado.md"</em>.</p>
+        <button id="connectFolderBtn" class="shrink-0 flex items-center gap-1 text-[11px] font-semibold bg-white border border-primary-300 text-primary-700 rounded px-2 py-1.5 hover:bg-primary-100 transition-colors">
+          <i data-lucide="folder-sync" class="w-3.5 h-3.5"></i><span id="folderLabel">Conectar pasta</span>
+        </button>
+      </div>
+      <p id="fsFallbackNote" class="hidden text-[11px] text-primary-800 mt-1">Seu navegador não permite gravar na pasta diretamente: o arquivo será baixado e o prompt copiado — salve o download na pasta do projeto (ou cole no Kiro).</p>
+    </div>
+
+    <!-- API config -->
+    <details class="mt-3 border border-neutral-200 rounded-md">
+      <summary class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-neutral-600">
+        <i data-lucide="chevron-right" class="chev w-3.5 h-3.5"></i>
+        <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+        Configurar chave de API (opcional — para gerar sem sair do app)
+      </summary>
+      <div class="px-3 pb-3 pt-1 space-y-2">
+        <div class="grid grid-cols-2 gap-2">
+          <select id="providerSelect" class="text-sm border border-neutral-300 rounded-md px-2 py-1.5">
+            <option value="gemini">Google Gemini (tem cota grátis)</option>
+            <option value="anthropic">Anthropic (Claude)</option>
+            <option value="openai">OpenAI (ChatGPT)</option>
+          </select>
+          <input id="modelInput" type="text" class="text-sm border border-neutral-300 rounded-md px-2 py-1.5" placeholder="modelo">
+        </div>
+        <input id="apiKeyInput" type="password" class="w-full text-sm border border-neutral-300 rounded-md px-2 py-1.5" placeholder="Cole sua chave de API aqui">
+        <div class="flex items-center justify-between">
+          <a id="apiHelpLink" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-[11px] text-primary-700 hover:underline flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>Onde conseguir a chave</a>
+          <span class="text-[11px] text-neutral-400">Salva apenas no seu navegador</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- Status -->
+    <div id="statusBox" class="hidden mt-3 rounded-md px-3 py-2 text-sm flex items-start gap-2"></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+    <div class="flex border-b border-neutral-200">
+      <button class="tab-btn tab-active flex-1 px-3 py-2 text-sm flex items-center justify-center gap-1.5" data-tab="prompt"><i data-lucide="scroll-text" class="w-4 h-4"></i>Prompt</button>
+      <button class="tab-btn flex-1 px-3 py-2 text-sm flex items-center justify-center gap-1.5" data-tab="result"><i data-lucide="eye" class="w-4 h-4"></i>Resultado</button>
+      <button class="tab-btn flex-1 px-3 py-2 text-sm flex items-center justify-center gap-1.5" data-tab="editor"><i data-lucide="square-pen" class="w-4 h-4"></i>Editor</button>
+    </div>
+
+    <!-- Tab: Prompt -->
+    <div id="tab-prompt" class="p-3">
+      <div class="flex items-center justify-between mb-2">
+        <span id="promptMeta" class="text-[11px] text-neutral-400">Clique em um botão de geração para montar o prompt</span>
+      </div>
+      <textarea id="promptArea" rows="16" class="w-full text-xs font-mono border border-neutral-300 rounded-md p-2 bg-neutral-50" placeholder="O prompt completo (agente + tema + anexos + configurações) aparece aqui..." spellcheck="false"></textarea>
+    </div>
+
+    <!-- Tab: Resultado -->
+    <div id="tab-result" class="hidden p-3">
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <button id="downloadHtmlBtn" disabled class="flex items-center gap-1.5 text-xs font-semibold bg-primary-700 text-white rounded px-2.5 py-1.5 disabled:opacity-40 hover:bg-primary-800 transition-colors"><i data-lucide="download" class="w-3.5 h-3.5"></i>Baixar presentation.html</button>
+        <button id="openTabBtn" disabled class="flex items-center gap-1.5 text-xs font-semibold border border-neutral-300 rounded px-2.5 py-1.5 disabled:opacity-40 hover:bg-neutral-50 transition-colors"><i data-lucide="external-link" class="w-3.5 h-3.5"></i>Abrir em nova aba</button>
+        <button id="exportPdfBtn" disabled class="flex items-center gap-1.5 text-xs font-semibold border border-neutral-300 rounded px-2.5 py-1.5 disabled:opacity-40 hover:bg-neutral-50 transition-colors"><i data-lucide="file-down" class="w-3.5 h-3.5"></i>Exportar PDF</button>
+        <label class="flex items-center gap-1.5 text-xs font-semibold border border-neutral-300 rounded px-2.5 py-1.5 hover:bg-neutral-50 transition-colors cursor-pointer ml-auto">
+          <i data-lucide="folder-open" class="w-3.5 h-3.5"></i>Carregar HTML existente
+          <input type="file" id="loadHtmlInput" accept=".html,.htm" class="hidden">
+        </label>
+      </div>
+      <div id="resultPlaceholder" class="border border-dashed border-neutral-300 rounded-md h-[460px] flex flex-col items-center justify-center text-neutral-400">
+        <i data-lucide="presentation" class="w-10 h-10"></i>
+        <p class="text-sm mt-2">A apresentação gerada aparece aqui</p>
+      </div>
+      <iframe id="previewFrame" class="hidden w-full h-[460px] border border-neutral-300 rounded-md bg-white" title="Preview da apresentação"></iframe>
+    </div>
+
+    <!-- Tab: Editor -->
+    <div id="tab-editor" class="hidden p-3">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-[11px] text-neutral-500">Edite o código e clique em Aplicar para atualizar o preview. Você também pode me pedir edições no Kiro ("no slide 3, troque o gráfico por...").</p>
+        <button id="applyEditBtn" class="shrink-0 flex items-center gap-1.5 text-xs font-semibold bg-secondary-500 text-white rounded px-2.5 py-1.5 hover:bg-secondary-600 transition-colors"><i data-lucide="check" class="w-3.5 h-3.5"></i>Aplicar</button>
+      </div>
+      <textarea id="editorArea" rows="18" class="w-full text-xs font-mono border border-neutral-300 rounded-md p-2 bg-neutral-50" placeholder="Gere uma apresentação ou carregue um HTML existente para editar aqui..." spellcheck="false"></textarea>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="max-w-[1600px] mx-auto px-4 pb-6 text-[11px] text-neutral-400">
+  Slide Studio WEG — arquivo único, sem backend. Configurações salvas localmente no navegador.
+</footer>
+
+<script>
+/* ============================================================
+   ESTADO E PERSISTÊNCIA
+============================================================ */
+const LS_CFG = 'ssw_config_v1';
+const DEFAULTS = {
+  colors: { primary:'#00579D', secondary:'#FCA304', tertiary:'#9F7BBA' },
+  font: 'Inter',
+  slideCount: 12,
+  lang: 'pt-BR',
+  tone: 'Corporativo',
+  components: { progressbar:true, pagination:true, swipe:true, darkmode:false, counters:true, timeline:false, compareCards:true },
+  logoType: 'weg',
+  customLogoSvg: null,
+  provider: 'gemini'
+};
+let state = JSON.parse(JSON.stringify(DEFAULTS));
+try {
+  const saved = JSON.parse(localStorage.getItem(LS_CFG) || 'null');
+  if (saved) {
+    state = Object.assign({}, DEFAULTS, saved);
+    state.colors = Object.assign({}, DEFAULTS.colors, saved.colors || {});
+    state.components = Object.assign({}, DEFAULTS.components, saved.components || {});
+  }
+} catch(e) {}
+function saveState(){ localStorage.setItem(LS_CFG, JSON.stringify(state)); }
+
+const MODEL_DEFAULTS = { gemini:'gemini-2.5-flash', anthropic:'claude-sonnet-4-5', openai:'gpt-4o' };
+const API_HELP = {
+  gemini:'https://aistudio.google.com/app/apikey',
+  anthropic:'https://console.anthropic.com/settings/keys',
+  openai:'https://platform.openai.com/api-keys'
+};
+let attachedFiles = [];   // {name, content}
+let dirHandle = null;
+let lastHtml = null;
+
+/* ============================================================
+   PALETA: GERAÇÃO DE ESCALA 50–900
+============================================================ */
+function hexToHsl(hex){
+  hex = hex.replace('#','');
+  const r = parseInt(hex.substr(0,2),16)/255, g = parseInt(hex.substr(2,2),16)/255, b = parseInt(hex.substr(4,2),16)/255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h = 0, s = 0; const l = (max+min)/2;
+  if (max !== min){
+    const d = max-min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    if (max === r) h = (g-b)/d + (g<b?6:0);
+    else if (max === g) h = (b-r)/d + 2;
+    else h = (r-g)/d + 4;
+    h *= 60;
+  }
+  return { h, s: s*100 };
+}
+function hslToHex(h,s,l){
+  s /= 100; l /= 100;
+  const k = n => (n + h/30) % 12;
+  const a = s * Math.min(l, 1-l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n)-3, Math.min(9-k(n), 1)));
+  const to = x => Math.round(255*x).toString(16).padStart(2,'0').toUpperCase();
+  return '#' + to(f(0)) + to(f(8)) + to(f(4));
+}
+const STOPS = {50:[96,0.5],100:[93,0.62],200:[85,0.78],300:[74,0.9],400:[62,1],500:[52,1],600:[44,1],800:[30,1],900:[24,1]};
+function genScale(hex){
+  const { h, s } = hexToHsl(hex);
+  const scale = { 700: hex.toUpperCase() };
+  for (const stop of Object.keys(STOPS)){
+    const [L, sf] = STOPS[stop];
+    scale[stop] = hslToHex(h, Math.min(100, Math.max(6, s*sf)), L);
+  }
+  return scale;
+}
+const WEG_SEMANTIC = {
+  positive:{50:'#EFFEF5',100:'#D9FFE9',200:'#7DF8B2',300:'#7DF8B2',400:'#3DEB89',500:'#13CE66',600:'#09B054',700:'#0B8A45',800:'#0F6C39',900:'#0E5932'},
+  negative:{50:'#FFF1F1',100:'#FFDFDF',200:'#FFC5C5',300:'#FF9D9D',400:'#FF6464',500:'#FF4949',600:'#ED1515',700:'#C80D0D',800:'#A50F0F',900:'#881414'},
+  warning:{50:'#FFFFE7',100:'#FEFFC1',200:'#FFFD86',300:'#FFF441',400:'#FFE50D',500:'#FFD600',600:'#D19D00',700:'#A67102',800:'#89570A',900:'#74470F'},
+  info:{50:'#EBFDFF',100:'#CDF6FF',200:'#8AE8FF',300:'#62DDFE',400:'#1BC4F5',500:'#00A7DB',600:'#0284B8',700:'#0A6A94',800:'#125778',900:'#134766'},
+  neutral:{50:'#F8FAFC',100:'#F1F5F9',200:'#E2E8F0',300:'#CBD5E1',400:'#94A3B8',500:'#64748B',600:'#475569',700:'#334155',800:'#1E293B',900:'#0F172A'}
+};
+function colorsObject(){
+  return {
+    primary: genScale(state.colors.primary),
+    secondary: genScale(state.colors.secondary),
+    tertiary: genScale(state.colors.tertiary),
+    positive: WEG_SEMANTIC.positive, negative: WEG_SEMANTIC.negative,
+    warning: WEG_SEMANTIC.warning, info: WEG_SEMANTIC.info, neutral: WEG_SEMANTIC.neutral
+  };
+}
+const PRESETS = {
+  weg:      { label:'WEG Padrão',   primary:'#00579D', secondary:'#FCA304', tertiary:'#9F7BBA' },
+  energia:  { label:'Âmbar Energia', primary:'#B95404', secondary:'#00579D', tertiary:'#64748B' },
+  sustent:  { label:'Verde',        primary:'#0B8A45', secondary:'#FCA304', tertiary:'#00579D' },
+  grafite:  { label:'Grafite',      primary:'#334155', secondary:'#0A92ED', tertiary:'#8862A2' }
+};
+const WEG_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg>';
+
+/* ============================================================
+   UI: PRESETS, SWATCHES, PREVIEWS
+============================================================ */
+const $ = id => document.getElementById(id);
+
+function renderPresets(){
+  const row = $('presetRow'); row.innerHTML = '';
+  Object.entries(PRESETS).forEach(([key, p]) => {
+    const b = document.createElement('button');
+    b.className = 'flex items-center gap-1.5 border border-neutral-300 rounded-md px-2 py-1.5 text-xs font-medium hover:border-primary-500 hover:bg-primary-50 transition-colors';
+    b.innerHTML = '<span class="flex gap-0.5">' +
+      '<span style="width:10px;height:10px;border-radius:2px;background:'+p.primary+'"></span>' +
+      '<span style="width:10px;height:10px;border-radius:2px;background:'+p.secondary+'"></span>' +
+      '<span style="width:10px;height:10px;border-radius:2px;background:'+p.tertiary+'"></span></span>' + p.label;
+    b.onclick = () => {
+      state.colors = { primary:p.primary, secondary:p.secondary, tertiary:p.tertiary };
+      $('colorPrimary').value = p.primary; $('colorSecondary').value = p.secondary; $('colorTertiary').value = p.tertiary;
+      saveState(); renderScales();
+    };
+    row.appendChild(b);
+  });
+}
+function renderScales(){
+  [['colorPrimary','scalePrimary','primary'],['colorSecondary','scaleSecondary','secondary'],['colorTertiary','scaleTertiary','tertiary']].forEach(([inp, wrap]) => {
+    const hex = $(inp).value;
+    const scale = genScale(hex);
+    const el = $(wrap); el.innerHTML = '';
+    ['50','100','200','300','400','500','600','700','800','900'].forEach(stop => {
+      const d = document.createElement('div');
+      d.className = 'swatch'; d.style.background = scale[stop]; d.title = stop + ' · ' + scale[stop];
+      el.appendChild(d);
+    });
+  });
+}
+function renderFontPreview(){
+  const f = state.font;
+  let link = document.getElementById('previewFontLink');
+  if (!link){ link = document.createElement('link'); link.id = 'previewFontLink'; link.rel = 'stylesheet'; document.head.appendChild(link); }
+  link.href = 'https://fonts.googleapis.com/css2?family=' + f.replace(/ /g,'+') + ':wght@300;400;700&display=swap';
+  $('fontPreview').style.fontFamily = "'" + f + "', sans-serif";
+}
+
+/* ============================================================
+   ANEXOS
+============================================================ */
+function renderFileList(){
+  const ul = $('fileList'); ul.innerHTML = '';
+  attachedFiles.forEach((f, i) => {
+    const li = document.createElement('li');
+    li.className = 'flex items-center gap-2 text-xs bg-neutral-50 border border-neutral-200 rounded px-2 py-1.5';
+    li.innerHTML = '<i data-lucide="file-text" class="w-3.5 h-3.5 text-neutral-500 shrink-0"></i>' +
+      '<span class="truncate flex-1" title="'+f.name+'">'+f.name+'</span>' +
+      '<span class="text-neutral-400 shrink-0">'+Math.round(f.content.length/1024)+' KB</span>' +
+      '<button data-i="'+i+'" class="rmf text-negative-600 hover:text-negative-700 shrink-0"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>';
+    ul.appendChild(li);
+  });
+  ul.querySelectorAll('.rmf').forEach(b => b.onclick = () => { attachedFiles.splice(+b.dataset.i, 1); renderFileList(); });
+  lucide.createIcons();
+}
+async function addFiles(fileList){
+  for (const file of fileList){
+    let text = await file.text();
+    if (text.length > 100000) text = text.slice(0, 100000) + '\n\n[... conteúdo truncado em 100 mil caracteres ...]';
+    attachedFiles.push({ name: file.name, content: text });
+  }
+  renderFileList();
+}
+
+/* ============================================================
+   MONTAGEM DO PROMPT
+============================================================ */
+function componentsText(){
+  const c = state.components; const lines = [];
+  if (c.progressbar) lines.push('- Barra de progresso fixa no topo que avança conforme o slide atual.');
+  if (c.pagination)  lines.push('- Paginação "Slide X de N" e botões Anterior/Próximo fixos na parte inferior.');
+  if (c.swipe)       lines.push('- Navegação por gestos de swipe (touchstart/touchend) em dispositivos móveis.');
+  if (c.darkmode)    lines.push('- Botão de alternância entre modo claro e modo escuro, funcional durante toda a apresentação.');
+  if (c.counters)    lines.push('- Números-chave com animação de contagem crescente ao entrar no slide.');
+  if (c.timeline)    lines.push('- Componente de timeline visual para slides cronológicos ou de roadmap (quando fizer sentido para o conteúdo).');
+  if (c.compareCards)lines.push('- Cards comparativos (antes vs depois, problema vs solução) quando fizerem sentido para o conteúdo.');
+  return lines.length ? lines.join('\n') : '- Nenhum componente opcional; mantenha a apresentação enxuta.';
+}
+function attachmentsText(){
+  if (!attachedFiles.length) return 'Nenhum anexo fornecido.';
+  return attachedFiles.map(f => '=== ANEXO: ' + f.name + ' ===\n' + f.content).join('\n\n');
+}
+const LANG_NAMES = { 'pt-BR':'Português (Brasil)', 'en':'English', 'es':'Español' };
+
+function buildPrompt(){
+  const theme = $('themeInput').value.trim();
+  const audience = $('audienceInput').value.trim() || 'Não informado';
+  const context = $('contextInput').value.trim() || 'Nenhum contexto adicional.';
+  const font = state.font;
+  const fontUrl = 'https://fonts.googleapis.com/css2?family=' + font.replace(/ /g,'+') + ':wght@300;400;500;600;700&display=swap';
+  const colorsJson = JSON.stringify(colorsObject(), null, 2);
+  const primary700 = state.colors.primary.toUpperCase();
+  const logoSvg = (state.logoType === 'custom' && state.customLogoSvg) ? state.customLogoSvg : WEG_LOGO_SVG;
+  const today = new Date().toLocaleDateString(state.lang === 'en' ? 'en-US' : state.lang === 'es' ? 'es-ES' : 'pt-BR', { year:'numeric', month:'long', day:'numeric' });
+
+  return `# PAPEL E OBJETIVO
+Você é um especialista em design de apresentações corporativas e desenvolvimento front-end.
+Seu objetivo é gerar uma apresentação de slides completa, visualmente impactante e funcionalmente interativa, entregue como um único arquivo HTML autocontido, utilizando Tailwind CSS (via CDN) e JavaScript puro.
+NÃO utilize React ou qualquer framework; apenas HTML puro.
+
+# ETAPA 1 — PESQUISA E COLETA DE INFORMAÇÕES
+1. O tema central está na seção ENTRADA DO USUÁRIO.
+2. Se você tiver acesso à internet, realize buscas para levantar dados, estatísticas, fatos e contexto atualizados sobre o tema. Se não tiver acesso, use exclusivamente os dados fornecidos nos anexos e no contexto, complementando apenas com conhecimento geral consolidado.
+3. Priorize os dados dos anexos e do contexto; depois fontes confiáveis (sites institucionais, relatórios técnicos, publicações reconhecidas).
+4. Para cada informação coletada, avalie a confiabilidade: CONFIRMADA (fonte confiável) ou NÃO TOTALMENTE CONFIRMADA (fonte fraca ou sem confirmação dupla).
+5. NÃO invente dados. Se alguma informação necessária não puder ser confirmada, inclua no slide correspondente uma nota discreta: "Nota: esta informação não pôde ser totalmente confirmada no momento da geração."
+
+# ETAPA 2 — ESTRUTURA (Regra dos 3 de Steve Jobs)
+ATO 1 — Abertura: contexto, problema ou oportunidade.
+ATO 2 — Desenvolvimento: exatamente 3 ideias centrais, cada uma em seu grupo de slides.
+ATO 3 — Conclusão: síntese + chamada para ação + "One More Thing" (insight final impactante).
+- Defina exatamente 3 mensagens principais que o público deve lembrar; cada seção do ATO 2 corresponde a uma delas.
+- Cada slide carrega apenas 1 ideia, com no máximo 1 frase de impacto + dados visuais de suporte.
+- O slide de conclusão deve ter uma frase única e memorável.
+
+# ETAPA 3 — PADRÕES TED
+- Conteúdo: 1 ideia por slide; o slide reforça, não substitui o palestrante.
+- Texto: mínimo possível; palavras-chave, frases curtas ou dados numéricos em destaque.
+- Visual: use ícones da biblioteca Lucide Icons.
+- Tipografia: fonte ${font}, tamanho grande e bold nos títulos.
+- Cores: paleta configurada abaixo; cor principal = primary-700 (${primary700}).
+- Narrativa: os slides formam uma jornada: Problema → Tensão → Solução → Impacto.
+- Layout: limpo, consistente, muito espaço em branco, alinhamento em grid.
+- Animações: fade-in suave entre slides; sem efeitos chamativos.
+
+# ETAPA 4 — REGRAS OBRIGATÓRIAS DE ESTILO VISUAL
+## CDNs — use EXATAMENTE estas, sem exceções:
+<script src="https://cdn.tailwindcss.com"><\/script>
+<script src="https://unpkg.com/lucide@latest"><\/script>
+<link href="${fontUrl}" rel="stylesheet">
+PROIBIDO: cdnjs.cloudflare.com.
+
+## Paleta de cores — configure no tailwind.config exatamente assim:
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: ${colorsJson},
+      fontFamily: { sans: ['${font}', 'sans-serif'] }
+    }
+  }
+}
+<\/script>
+A cor de marca principal é primary-700 (${primary700}).
+
+## Semântica de cor
+- Ação principal: primary (ex.: bg-primary-700 text-white)
+- Destrutivo/erro: negative (ex.: bg-negative-50 text-negative-700)
+- Sucesso: positive | Alerta: warning | Informativo: info
+- Neutro/cancelar: neutral | Destaque âmbar: secondary | Destaque roxo: tertiary
+
+## Tipografia
+- Fonte padrão: ${font} (Google Fonts acima), aplicada via fontFamily.sans.
+- Títulos: font-bold, text-4xl a text-7xl. Corpo: font-medium ou font-light.
+- Máximo de 2 tamanhos de fonte por slide.
+
+## Logo
+Use este logo (SVG inline) na capa, no encerramento e discretamente (tamanho pequeno) nos demais slides:
+${logoSvg}
+
+## Padrões visuais
+- Fundo claro predominante, textos em primary/neutral escuros.
+- Estética industrial/minimalista; evite glassmorphism e gradientes excessivos.
+- Layout em grid, alinhamento consistente, muito espaço em branco.
+
+## Responsividade
+A apresentação será exibida em telas de tamanhos diferentes: use valores percentuais e unidades relativas (vw, vh, clamp) para garantir a mesma experiência em telas de 1024px ou maiores.
+
+# ETAPA 5 — ESPECIFICAÇÕES TÉCNICAS
+Stack obrigatória: HTML5 semântico em arquivo único e autocontido; Tailwind CSS via CDN; Lucide Icons via unpkg; JavaScript puro; nenhuma dependência de servidor ou backend.
+Funcionalidades obrigatórias:
+- Navegação por teclas de seta (← →) e clique nos botões de navegação.
+- Indicador de progresso do avanço na apresentação.
+- Transição suave (fade) entre slides via CSS transition.
+- Slide de capa com título, subtítulo e data (${today}).
+- Slide de encerramento com frase de impacto e chamada para ação.
+- Ícones inicializados com lucide.createIcons() após o DOM estar pronto.
+Componentes solicitados para esta apresentação:
+${componentsText()}
+
+# ETAPA 6 — ESTRUTURA DOS ${state.slideCount} SLIDES
+Distribua o total de ${state.slideCount} slides mantendo esta ordem:
+1. CAPA — título impactante + subtítulo + data.
+2. AGENDA / MAPA DA JORNADA — os 3 grandes temas.
+3. ATO 1 — CONTEXTO / O PROBLEMA (1 a 2 slides).
+Meio — ATO 2: IDEIA 1 (título + dado principal + visual) e APROFUNDAMENTO (evidência ou caso real); IDEIA 2 (mesma estrutura); IDEIA 3 (mesma estrutura).
+-3: ATO 3 — SÍNTESE (as 3 mensagens que o público deve levar).
+-2: CHAMADA PARA AÇÃO + ONE MORE THING (insight final inesperado).
+Último: ENCERRAMENTO — frase memorável + créditos/fontes das informações.
+
+# ETAPA 7 — CHECKLIST DE QUALIDADE (verifique antes de entregar)
+[ ] Cada slide tem apenas 1 ideia central e texto mínimo?
+[ ] As 3 mensagens principais estão claras e há fluxo narrativo?
+[ ] Dados não confirmados estão marcados com a nota discreta?
+[ ] A paleta está configurada e primary-700 = ${primary700}?
+[ ] Todas as CDNs obrigatórias presentes; nenhuma cdnjs?
+[ ] lucide.createIcons() chamado; fonte ${font} aplicada?
+[ ] Transições suaves e discretas; arquivo único funcional?
+
+# ENTRADA DO USUÁRIO
+Tema da apresentação: ${theme}
+Público-alvo: ${audience}
+Tom de voz: ${state.tone}
+Idioma da apresentação: ${LANG_NAMES[state.lang] || state.lang}
+Informações adicionais: ${context}
+
+# ANEXOS FORNECIDOS (conteúdo integral — priorize estes dados)
+${attachmentsText()}
+
+# SAÍDA ESPERADA
+Retorne APENAS o código HTML completo do arquivo presentation.html, começando com <!DOCTYPE html> e terminando com </html>. Sem blocos de markdown, sem crases de código, sem explicações antes ou depois.`;
+}
+
+function refreshPromptArea(){
+  const p = buildPrompt();
+  $('promptArea').value = p;
+  $('promptMeta').textContent = p.length.toLocaleString('pt-BR') + ' caracteres · ~' + Math.ceil(p.length/4).toLocaleString('pt-BR') + ' tokens (estimativa)';
+  return p;
+}
+function requireTheme(){
+  if (!$('themeInput').value.trim()){
+    setStatus('error', 'Preencha o tema da apresentação antes de gerar.');
+    $('themeInput').focus();
+    return false;
+  }
+  return true;
+}
+
+/* ============================================================
+   STATUS
+============================================================ */
+function setStatus(type, msg){
+  const box = $('statusBox');
+  const styles = {
+    info:    'bg-info-50 text-info-800 border border-info-200',
+    working: 'bg-primary-50 text-primary-800 border border-primary-200',
+    success: 'bg-positive-50 text-positive-800 border border-positive-200',
+    error:   'bg-negative-50 text-negative-800 border border-negative-200'
+  };
+  const icons = { info:'info', working:'loader-2', success:'check-circle-2', error:'alert-circle' };
+  box.className = 'mt-3 rounded-md px-3 py-2 text-sm flex items-start gap-2 ' + styles[type];
+  box.innerHTML = '<i data-lucide="'+icons[type]+'" class="w-4 h-4 mt-0.5 shrink-0 '+(type==='working'?'animate-spin':'')+'"></i><span>'+msg+'</span>';
+  box.classList.remove('hidden');
+  lucide.createIcons();
+}
+
+/* ============================================================
+   TABS
+============================================================ */
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('tab-active', b.dataset.tab === name));
+  ['prompt','result','editor'].forEach(t => $('tab-'+t).classList.toggle('hidden', t !== name));
+}
+
+/* ============================================================
+   INTEGRAÇÃO KIRO (File System Access API)
+============================================================ */
+const fsSupported = 'showDirectoryPicker' in window;
+if (!fsSupported){ $('connectFolderBtn').classList.add('hidden'); $('fsFallbackNote').classList.remove('hidden'); }
+
+async function connectFolder(){
+  try {
+    dirHandle = await window.showDirectoryPicker({ mode:'readwrite' });
+    $('folderLabel').textContent = dirHandle.name;
+    setStatus('success', 'Pasta "'+dirHandle.name+'" conectada. Os prompts serão salvos diretamente nela.');
+  } catch(e) { /* usuário cancelou */ }
+}
+async function savePromptToFolder(text){
+  if (!dirHandle) return false;
+  const fh = await dirHandle.getFileHandle('prompt-gerado.md', { create:true });
+  const w = await fh.createWritable();
+  await w.write(text); await w.close();
+  return true;
+}
+function downloadFile(name, content, type){
+  const blob = new Blob([content], { type: type || 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+async function generateWithKiro(){
+  if (!requireTheme()) return;
+  const p = refreshPromptArea();
+  switchTab('prompt');
+  if (dirHandle){
+    try {
+      await savePromptToFolder(p);
+      setStatus('success', 'Prompt salvo como <strong>prompt-gerado.md</strong> na pasta "'+dirHandle.name+'". Agora me diga no Kiro: <em>"gere a apresentação a partir do prompt-gerado.md"</em>.');
+      return;
+    } catch(e){ /* cai no fallback */ }
+  }
+  downloadFile('prompt-gerado.md', p, 'text/markdown;charset=utf-8');
+  await copyText(p);
+  setStatus('info', 'Prompt baixado como <strong>prompt-gerado.md</strong> e copiado para a área de transferência. Salve o arquivo na pasta do projeto e me peça para gerar — ou cole o prompt direto no Kiro.');
+}
+
+/* ============================================================
+   CLIPBOARD
+============================================================ */
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    $('promptArea').value = t; $('promptArea').select();
+    try { document.execCommand('copy'); return true; } catch(e2){ return false; }
+  }
+}
+
+/* ============================================================
+   GERAÇÃO VIA API
+============================================================ */
+const SYS_PROMPT = 'Você é um especialista em design de apresentações corporativas e desenvolvimento front-end. Responda exclusivamente com o código HTML completo e funcional solicitado, sem blocos de markdown, sem crases e sem explicações.';
+async function callApi(prompt){
+  const provider = state.provider;
+  const key = (localStorage.getItem('ssw_key_' + provider) || '').trim();
+  if (!key) throw new Error('Cadastre a chave de API em "Configurar chave de API" — ou use o botão "Gerar com Kiro" / "Copiar prompt".');
+  const model = ($('modelInput').value || MODEL_DEFAULTS[provider]).trim();
+  let res, data;
+  if (provider === 'anthropic'){
+    res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{ 'content-type':'application/json', 'x-api-key':key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
+      body: JSON.stringify({ model, max_tokens: 32000, system: SYS_PROMPT, messages:[{ role:'user', content: prompt }] })
+    });
+    data = await res.json();
+    if (!res.ok) throw new Error('Anthropic: ' + ((data.error && data.error.message) || res.status));
+    return (data.content || []).map(b => b.text || '').join('');
+  }
+  if (provider === 'openai'){
+    res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method:'POST',
+      headers:{ 'content-type':'application/json', 'authorization':'Bearer ' + key },
+      body: JSON.stringify({ model, max_tokens: 16384, messages:[{ role:'system', content: SYS_PROMPT }, { role:'user', content: prompt }] })
+    });
+    data = await res.json();
+    if (!res.ok) throw new Error('OpenAI: ' + ((data.error && data.error.message) || res.status));
+    return data.choices[0].message.content;
+  }
+  // gemini
+  res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(key), {
+    method:'POST',
+    headers:{ 'content-type':'application/json' },
+    body: JSON.stringify({
+      contents:[{ role:'user', parts:[{ text: SYS_PROMPT + '\n\n' + prompt }] }],
+      generationConfig:{ maxOutputTokens: 32768, temperature: 0.7 }
+    })
+  });
+  data = await res.json();
+  if (!res.ok) throw new Error('Gemini: ' + ((data.error && data.error.message) || res.status));
+  const parts = (((data.candidates || [])[0] || {}).content || {}).parts || [];
+  return parts.map(p => p.text || '').join('');
+}
+function extractHtml(text){
+  let t = (text || '').replace(/```html/gi, '').replace(/```/g, '');
+  const lower = t.toLowerCase();
+  const j = lower.lastIndexOf('</html>');
+  let i = lower.indexOf('<!doctype html');
+  if (i < 0) i = lower.indexOf('<html');
+  if (i >= 0 && j > i) return t.slice(i, j + 7);
+  return null;
+}
+function renderResult(html){
+  lastHtml = html;
+  $('editorArea').value = html;
+  $('previewFrame').srcdoc = html;
+  $('previewFrame').classList.remove('hidden');
+  $('resultPlaceholder').classList.add('hidden');
+  $('downloadHtmlBtn').disabled = false;
+  $('openTabBtn').disabled = false;
+  $('exportPdfBtn').disabled = false;
+}
+async function generateViaApi(){
+  if (!requireTheme()) return;
+  const p = refreshPromptArea();
+  switchTab('result');
+  setStatus('working', 'Gerando apresentação via API... isso pode levar de 30 segundos a alguns minutos. Não feche a página.');
+  $('genBtn').disabled = true; $('kiroBtn').disabled = true;
+  try {
+    const raw = await callApi(p);
+    const html = extractHtml(raw);
+    if (!html) {
+      console.log('Resposta da API:', raw);
+      throw new Error('A IA não retornou um HTML válido. Tente novamente ou ajuste o tema/modelo.');
+    }
+    renderResult(html);
+    setStatus('success', 'Apresentação gerada! Confira o preview, baixe o HTML ou edite na aba Editor.');
+  } catch(e){
+    setStatus('error', e.message);
+  } finally {
+    $('genBtn').disabled = false; $('kiroBtn').disabled = false;
+  }
+}
+
+/* ============================================================
+   EVENTOS E INICIALIZAÇÃO
+============================================================ */
+function bind(){
+  // cores
+  ['colorPrimary','colorSecondary','colorTertiary'].forEach((id, i) => {
+    const key = ['primary','secondary','tertiary'][i];
+    $(id).addEventListener('input', () => { state.colors[key] = $(id).value; saveState(); renderScales(); });
+  });
+  // tipografia
+  $('fontSelect').addEventListener('change', () => { state.font = $('fontSelect').value; saveState(); renderFontPreview(); });
+  // estrutura
+  $('slideCount').addEventListener('input', () => { state.slideCount = +$('slideCount').value; $('slideCountLabel').textContent = state.slideCount; saveState(); });
+  $('langSelect').addEventListener('change', () => { state.lang = $('langSelect').value; saveState(); });
+  $('toneSelect').addEventListener('change', () => { state.tone = $('toneSelect').value; saveState(); });
+  // componentes
+  document.querySelectorAll('.comp').forEach(cb => cb.addEventListener('change', () => { state.components[cb.value] = cb.checked; saveState(); }));
+  // logo
+  document.querySelectorAll('input[name="logoType"]').forEach(r => r.addEventListener('change', () => {
+    state.logoType = r.value; saveState();
+    $('logoUploadWrap').classList.toggle('hidden', r.value !== 'custom');
+  }));
+  $('logoFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    if (f.size > 50 * 1024){ $('logoStatus').textContent = 'Arquivo acima de 50 KB.'; $('logoStatus').className = 'text-[11px] mt-1 text-negative-600'; return; }
+    const txt = await f.text();
+    if (!txt.includes('<svg')){ $('logoStatus').textContent = 'O arquivo não parece um SVG válido.'; $('logoStatus').className = 'text-[11px] mt-1 text-negative-600'; return; }
+    state.customLogoSvg = txt; saveState();
+    $('logoStatus').textContent = 'Logo carregado: ' + f.name;
+    $('logoStatus').className = 'text-[11px] mt-1 text-positive-700';
+  });
+  // anexos
+  const dz = $('dropzone');
+  dz.addEventListener('click', () => $('fileInput').click());
+  $('fileInput').addEventListener('change', e => addFiles(e.target.files));
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dropzone-active'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dropzone-active'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dropzone-active'); addFiles(e.dataTransfer.files); });
+  // geração
+  $('kiroBtn').addEventListener('click', generateWithKiro);
+  $('genBtn').addEventListener('click', generateViaApi);
+  $('copyBtn').addEventListener('click', async () => {
+    if (!requireTheme()) return;
+    const p = refreshPromptArea(); switchTab('prompt');
+    const ok = await copyText(p);
+    setStatus(ok ? 'success' : 'error', ok ? 'Prompt copiado! Cole no Kiro, ChatGPT, Claude ou Gemini.' : 'Não consegui copiar automaticamente — selecione o texto na aba Prompt e copie manualmente.');
+  });
+  $('downloadPromptBtn').addEventListener('click', () => {
+    if (!requireTheme()) return;
+    const p = refreshPromptArea();
+    downloadFile('prompt-gerado.md', p, 'text/markdown;charset=utf-8');
+    setStatus('info', 'Prompt baixado. Salve na pasta do projeto para usar com o Kiro.');
+  });
+  $('connectFolderBtn').addEventListener('click', connectFolder);
+  // API config
+  $('providerSelect').addEventListener('change', () => {
+    state.provider = $('providerSelect').value; saveState(); syncProviderUI();
+  });
+  $('modelInput').addEventListener('change', () => localStorage.setItem('ssw_model_' + state.provider, $('modelInput').value));
+  $('apiKeyInput').addEventListener('change', () => localStorage.setItem('ssw_key_' + state.provider, $('apiKeyInput').value.trim()));
+  // tabs
+  document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+  // resultado
+  $('downloadHtmlBtn').addEventListener('click', () => { if (lastHtml) downloadFile('presentation.html', lastHtml, 'text/html;charset=utf-8'); });
+  $('openTabBtn').addEventListener('click', () => {
+    if (!lastHtml) return;
+    const blob = new Blob([lastHtml], { type:'text/html' });
+    window.open(URL.createObjectURL(blob), '_blank');
+  });
+  $('exportPdfBtn').addEventListener('click', () => {
+    if (!lastHtml) return;
+    const blob = new Blob([lastHtml], { type:'text/html' });
+    const w = window.open(URL.createObjectURL(blob), '_blank');
+    if (w){ try { w.addEventListener('load', () => setTimeout(() => w.print(), 800)); } catch(e){} }
+    setStatus('info', 'Apresentação aberta em nova aba com a janela de impressão. Escolha "Salvar como PDF" — cada slide vira uma página.');
+  });
+  $('loadHtmlInput').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    const txt = await f.text();
+    const html = extractHtml(txt) || txt;
+    renderResult(html); switchTab('result');
+    setStatus('success', 'HTML carregado. Edite na aba Editor ou visualize aqui.');
+    e.target.value = '';
+  });
+  // editor
+  $('applyEditBtn').addEventListener('click', () => {
+    const html = $('editorArea').value;
+    if (!html.trim()) return;
+    lastHtml = html;
+    $('previewFrame').srcdoc = html;
+    $('previewFrame').classList.remove('hidden');
+    $('resultPlaceholder').classList.add('hidden');
+    $('downloadHtmlBtn').disabled = false;
+    $('openTabBtn').disabled = false;
+    $('exportPdfBtn').disabled = false;
+    switchTab('result');
+    setStatus('success', 'Alterações aplicadas ao preview. Baixe o HTML para salvar.');
+  });
+}
+function syncProviderUI(){
+  const p = state.provider;
+  $('providerSelect').value = p;
+  $('modelInput').value = localStorage.getItem('ssw_model_' + p) || MODEL_DEFAULTS[p];
+  $('apiKeyInput').value = localStorage.getItem('ssw_key_' + p) || '';
+  $('apiHelpLink').href = API_HELP[p];
+}
+function restoreUI(){
+  $('colorPrimary').value = state.colors.primary;
+  $('colorSecondary').value = state.colors.secondary;
+  $('colorTertiary').value = state.colors.tertiary;
+  $('fontSelect').value = state.font;
+  $('slideCount').value = state.slideCount;
+  $('slideCountLabel').textContent = state.slideCount;
+  $('langSelect').value = state.lang;
+  $('toneSelect').value = state.tone;
+  document.querySelectorAll('.comp').forEach(cb => cb.checked = !!state.components[cb.value]);
+  document.querySelectorAll('input[name="logoType"]').forEach(r => r.checked = (r.value === state.logoType));
+  $('logoUploadWrap').classList.toggle('hidden', state.logoType !== 'custom');
+  if (state.logoType === 'custom' && state.customLogoSvg){
+    $('logoStatus').textContent = 'Logo personalizado salvo.'; $('logoStatus').className = 'text-[11px] mt-1 text-positive-700';
+  }
+  syncProviderUI();
+  renderPresets(); renderScales(); renderFontPreview();
+}
+
+restoreUI();
+bind();
+lucide.createIcons();
+</script>
+</body>
+</html>

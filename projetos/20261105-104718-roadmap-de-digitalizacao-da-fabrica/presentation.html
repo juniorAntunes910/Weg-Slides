@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap de Digitalização da Fábrica | WEG</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script src="https://unpkg.com/lucide@1.65.0/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+  "primary": {
+    "50": "#F0F5FA",
+    "100": "#E2EEF8",
+    "200": "#BBDCF7",
+    "300": "#81C3F8",
+    "400": "#3DA9FF",
+    "500": "#0A92FF",
+    "600": "#007CE0",
+    "700": "#00579D",
+    "800": "#005599",
+    "900": "#00447A"
+  },
+  "secondary": {
+    "50": "#FAF6F0",
+    "100": "#F8F0E2",
+    "200": "#F6E1BC",
+    "300": "#F7CD82",
+    "400": "#FDB93F",
+    "500": "#FCA60D",
+    "600": "#DE8F03",
+    "700": "#FCA304",
+    "800": "#976202",
+    "900": "#794E01"
+  },
+  "tertiary": {
+    "50": "#F5F3F6",
+    "100": "#EEEAF1",
+    "200": "#DACFE2",
+    "300": "#BFAACF",
+    "400": "#A280BC",
+    "500": "#8A5EAB",
+    "600": "#754D93",
+    "700": "#9F7BBA",
+    "800": "#503564",
+    "900": "#402A50"
+  },
+  "positive": {
+    "50": "#EFFEF5",
+    "100": "#D9FFE9",
+    "200": "#7DF8B2",
+    "300": "#7DF8B2",
+    "400": "#3DEB89",
+    "500": "#13CE66",
+    "600": "#09B054",
+    "700": "#0B8A45",
+    "800": "#0F6C39",
+    "900": "#0E5932"
+  },
+  "negative": {
+    "50": "#FFF1F1",
+    "100": "#FFDFDF",
+    "200": "#FFC5C5",
+    "300": "#FF9D9D",
+    "400": "#FF6464",
+    "500": "#FF4949",
+    "600": "#ED1515",
+    "700": "#C80D0D",
+    "800": "#A50F0F",
+    "900": "#881414"
+  },
+  "warning": {
+    "50": "#FFFFE7",
+    "100": "#FEFFC1",
+    "200": "#FFFD86",
+    "300": "#FFF441",
+    "400": "#FFE50D",
+    "500": "#FFD600",
+    "600": "#D19D00",
+    "700": "#A67102",
+    "800": "#89570A",
+    "900": "#74470F"
+  },
+  "info": {
+    "50": "#EBFDFF",
+    "100": "#CDF6FF",
+    "200": "#8AE8FF",
+    "300": "#62DDFE",
+    "400": "#1BC4F5",
+    "500": "#00A7DB",
+    "600": "#0284B8",
+    "700": "#0A6A94",
+    "800": "#125778",
+    "900": "#134766"
+  },
+  "neutral": {
+    "50": "#F8FAFC",
+    "100": "#F1F5F9",
+    "200": "#E2E8F0",
+    "300": "#CBD5E1",
+    "400": "#94A3B8",
+    "500": "#64748B",
+    "600": "#475569",
+    "700": "#334155",
+    "800": "#1E293B",
+    "900": "#0F172A"
+  }
+},
+      fontFamily: { sans: ['Inter', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  html, body { height: 100%; margin: 0; background: #F8FAFC; font-family: 'Inter', sans-serif; overflow: hidden; }
+  #deck { position: relative; width: 100vw; height: 100vh; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: clamp(2.5rem, 6vw, 6rem);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.6s ease;
+    background: #F8FAFC;
+  }
+  .slide.active { opacity: 1; visibility: visible; }
+  .deck-logo { position: absolute; top: clamp(1.5rem,3vw,2.5rem); right: clamp(2.5rem,6vw,6rem); width: clamp(48px,5vw,72px); height: auto; opacity: 0.9; }
+  .count-up { font-variant-numeric: tabular-nums; }
+
+  @media print {
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html, body { overflow: visible; height: auto; }
+    .no-print { display: none !important; }
+    #deck { position: static; width: auto; height: auto; }
+    .slide {
+      position: relative !important;
+      inset: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: 13.333in; height: 7.5in;
+      break-after: page; page-break-after: always;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Barra de progresso -->
+<div class="no-print fixed top-0 left-0 w-full h-1.5 bg-neutral-200 z-50">
+  <div id="progressBar" class="h-full bg-primary-700 transition-all duration-500" style="width:0%"></div>
+</div>
+
+<main id="deck">
+
+  <!-- SLIDE 1 — CAPA -->
+  <section class="slide active justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <div class="max-w-5xl">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 font-semibold px-4 py-1.5 rounded-full text-sm tracking-wide">
+          <i data-lucide="factory" class="w-4 h-4"></i> Indústria 4.0 · Unidade de Motores
+        </span>
+      </div>
+      <h1 class="text-primary-700 font-bold leading-tight" style="font-size:clamp(2.75rem,6vw,5rem)">
+        Roadmap de Digitalização da Fábrica
+      </h1>
+      <p class="mt-8 text-neutral-600 font-light max-w-3xl" style="font-size:clamp(1.25rem,2.2vw,1.75rem)">
+        Da linha de montagem do motor W22 à manufatura conectada em tempo real.
+      </p>
+      <div class="mt-12 flex items-center gap-4 text-neutral-500 font-medium">
+        <i data-lucide="calendar" class="w-5 h-5 text-primary-700"></i>
+        <span>5 de novembro de 2026 · Apresentação à Diretoria</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — AGENDA -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <h2 class="text-primary-700 font-bold mb-12" style="font-size:clamp(2rem,4vw,3.25rem)">A jornada em três atos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm">
+        <div class="w-14 h-14 rounded-xl bg-primary-100 flex items-center justify-center mb-6">
+          <i data-lucide="map-pin" class="w-7 h-7 text-primary-700"></i>
+        </div>
+        <span class="text-neutral-400 font-semibold">01</span>
+        <h3 class="text-neutral-800 font-bold mt-1" style="font-size:clamp(1.25rem,2vw,1.6rem)">Onde estamos</h3>
+        <p class="text-neutral-500 font-light mt-3">Nossa história, o produto em foco e a pressão por eficiência.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm">
+        <div class="w-14 h-14 rounded-xl bg-secondary-100 flex items-center justify-center mb-6">
+          <i data-lucide="cpu" class="w-7 h-7 text-secondary-600"></i>
+        </div>
+        <span class="text-neutral-400 font-semibold">02</span>
+        <h3 class="text-neutral-800 font-bold mt-1" style="font-size:clamp(1.25rem,2vw,1.6rem)">Como transformamos</h3>
+        <p class="text-neutral-500 font-light mt-3">Processo, produto conectado e inteligência preditiva na fábrica.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm">
+        <div class="w-14 h-14 rounded-xl bg-tertiary-100 flex items-center justify-center mb-6">
+          <i data-lucide="rocket" class="w-7 h-7 text-tertiary-700"></i>
+        </div>
+        <span class="text-neutral-400 font-semibold">03</span>
+        <h3 class="text-neutral-800 font-bold mt-1" style="font-size:clamp(1.25rem,2vw,1.6rem)">Para onde vamos</h3>
+        <p class="text-neutral-500 font-light mt-3">A decisão de investir na fábrica digital e o próximo passo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — ATO 1: Contexto / Histórico -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-primary-700 font-semibold mb-4"><i data-lucide="landmark" class="w-5 h-5"></i> ATO 1 · Onde estamos</span>
+    <h2 class="text-neutral-800 font-bold max-w-4xl leading-tight" style="font-size:clamp(1.9rem,3.6vw,3rem)">
+      De uma oficina em Jaraguá do Sul à liderança global em motores.
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
+      <div>
+        <p class="text-primary-700 font-bold count-up" style="font-size:clamp(2.5rem,5vw,4rem)"><span data-count="1961">1961</span></p>
+        <p class="text-neutral-500 font-medium mt-1">Fundação em Santa Catarina</p>
+      </div>
+      <div>
+        <p class="text-primary-700 font-bold count-up" style="font-size:clamp(2.5rem,5vw,4rem)"><span data-count="64">64</span></p>
+        <p class="text-neutral-500 font-medium mt-1">Parques fabris no mundo</p>
+      </div>
+      <div>
+        <p class="text-primary-700 font-bold count-up" style="font-size:clamp(2.5rem,5vw,4rem)"><span data-count="17">17</span></p>
+        <p class="text-neutral-500 font-medium mt-1">Países com produção</p>
+      </div>
+      <div>
+        <p class="text-primary-700 font-bold count-up" style="font-size:clamp(2.5rem,5vw,4rem)"><span data-count="16">16</span><span class="text-3xl">%</span></p>
+        <p class="text-neutral-500 font-medium mt-1">Participação em baixa tensão</p>
+      </div>
+    </div>
+    <p class="mt-12 text-neutral-500 font-light max-w-3xl">
+      Fundada por Werner Ricardo Voigt, Eggon João da Silva e Geraldo Werninghaus — as iniciais que formam a WEG. Hoje, líder global em motores elétricos de baixa tensão.
+    </p>
+  </section>
+
+  <!-- SLIDE 4 — ATO 1: Problema / Tensão -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-negative-600 font-semibold mb-4"><i data-lucide="alert-triangle" class="w-5 h-5"></i> A tensão</span>
+    <h2 class="text-neutral-800 font-bold max-w-4xl leading-tight" style="font-size:clamp(1.9rem,3.8vw,3.25rem)">
+      A liderança não se defende com a fábrica analógica.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 max-w-5xl">
+      <div class="bg-white rounded-2xl p-8 border-l-4 border-negative-500 shadow-sm">
+        <h3 class="text-neutral-800 font-semibold mb-4 flex items-center gap-2"><i data-lucide="x-circle" class="w-5 h-5 text-negative-500"></i> Hoje, sem dados</h3>
+        <ul class="space-y-3 text-neutral-500 font-light">
+          <li>Paradas de máquina descobertas tarde demais.</li>
+          <li>Indicadores de produção coletados no papel.</li>
+          <li>Qualidade verificada só no fim da linha.</li>
+        </ul>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border-l-4 border-positive-500 shadow-sm">
+        <h3 class="text-neutral-800 font-semibold mb-4 flex items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5 text-positive-500"></i> O que o mercado exige</h3>
+        <ul class="space-y-3 text-neutral-500 font-light">
+          <li>Concorrentes como ABB, Siemens e Nidec avançam.</li>
+          <li>Clientes pedem rastreabilidade e prazo.</li>
+          <li>Energia e eficiência viram diferencial competitivo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — ATO 2 · IDEIA 1: Processo / W22 -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-primary-700 font-semibold mb-4"><i data-lucide="settings-2" class="w-5 h-5"></i> ATO 2 · Ideia 1</span>
+    <h2 class="text-neutral-800 font-bold max-w-4xl leading-tight" style="font-size:clamp(1.9rem,3.8vw,3.25rem)">
+      Digitalizar onde o valor nasce: a linha do motor W22.
+    </h2>
+    <p class="text-neutral-500 font-light mt-5 max-w-3xl">Nosso carro-chefe em Motores Comerciais e Appliance, da fundição à expedição.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="flame" class="w-8 h-8 text-secondary-600 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold">Fundição</h3>
+        <p class="text-neutral-500 font-light text-sm mt-1">Carcaça em ferro fundido</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="disc-3" class="w-8 h-8 text-secondary-600 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold">Usinagem</h3>
+        <p class="text-neutral-500 font-light text-sm mt-1">Precisão dimensional</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="git-merge" class="w-8 h-8 text-secondary-600 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold">Bobinagem</h3>
+        <p class="text-neutral-500 font-light text-sm mt-1">Estator enrolado</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="package-check" class="w-8 h-8 text-secondary-600 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold">Montagem e teste</h3>
+        <p class="text-neutral-500 font-light text-sm mt-1">Ensaio final</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — ATO 2 · IDEIA 1 aprofundamento: W22 eficiência -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-primary-700 font-semibold mb-4"><i data-lucide="gauge" class="w-5 h-5"></i> Evidência · Produto W22</span>
+    <h2 class="text-neutral-800 font-bold max-w-4xl leading-tight" style="font-size:clamp(1.9rem,3.8vw,3.25rem)">
+      O W22 já entrega eficiência. A fábrica precisa acompanhar.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14 items-start">
+      <div class="md:col-span-1 bg-primary-700 rounded-2xl p-10 text-white">
+        <p class="font-light opacity-90">Redução de perdas elétricas do W22 frente a motores convencionais</p>
+        <p class="font-bold mt-6 count-up" style="font-size:clamp(3rem,6vw,4.5rem)">
+          <span data-count="10">10</span>–<span data-count="40">40</span><span class="text-3xl">%</span>
+        </p>
+      </div>
+      <div class="md:col-span-2 space-y-4">
+        <div class="bg-white rounded-xl p-6 border border-neutral-200 flex items-start gap-4">
+          <i data-lucide="magnet" class="w-7 h-7 text-tertiary-700 shrink-0"></i>
+          <p class="text-neutral-600 font-light">A versão <span class="font-semibold text-neutral-800">W22 Magnet</span> usa motor síncrono de ímãs permanentes acionado por inversor, elevando o patamar de eficiência.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-neutral-200 flex items-start gap-4">
+          <i data-lucide="users" class="w-7 h-7 text-primary-700 shrink-0"></i>
+          <p class="text-neutral-600 font-light">Atende clientes industriais, OEMs e fabricantes de equipamentos — onde confiabilidade e consumo energético decidem a compra.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — ATO 2 · IDEIA 2: Produto conectado -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-primary-700 font-semibold mb-4"><i data-lucide="radio" class="w-5 h-5"></i> ATO 2 · Ideia 2</span>
+    <h2 class="text-neutral-800 font-bold max-w-4xl leading-tight" style="font-size:clamp(1.9rem,3.8vw,3.25rem)">
+      Do motor que gira ao motor que informa.
+    </h2>
+    <p class="text-neutral-500 font-light mt-5 max-w-3xl">Com o WEG Motor Scan, o próprio ativo vira fonte de dados — vibração, temperatura, carga e velocidade na nuvem.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="thermometer" class="w-8 h-8 text-info-500 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold text-sm">Temperatura</h3>
+      </div>
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="activity" class="w-8 h-8 text-info-500 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold text-sm">Vibração</h3>
+      </div>
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="timer" class="w-8 h-8 text-info-500 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold text-sm">Tempo de operação</h3>
+      </div>
+      <div class="bg-white rounded-xl p-6 border border-neutral-200 text-center">
+        <i data-lucide="cloud" class="w-8 h-8 text-info-500 mx-auto mb-3"></i>
+        <h3 class="text-neutral-800 font-semibold text-sm">Dados na nuvem</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — ATO 2 · IDEIA 3: Inteligência / MES + IA -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-primary-700 font-semibold mb-4"><i data-lucide="brain-circuit" class="w-5 h-5"></i> ATO 2 · Ideia 3</span>
+    <h2 class="text-neutral-800 font-bold max-w-4xl leading-tight" style="font-size:clamp(1.9rem,3.8vw,3.25rem)">
+      Dados viram decisão: MES e IA no chão de fábrica.
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
+      <div class="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm">
+        <i data-lucide="layout-dashboard" class="w-9 h-9 text-primary-700 mb-5"></i>
+        <h3 class="text-neutral-800 font-semibold text-lg">PC-Factory MES 4.0</h3>
+        <p class="text-neutral-500 font-light mt-2">Integra OEE, MES e IoT para gerir a produção em tempo real.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm">
+        <i data-lucide="sparkles" class="w-9 h-9 text-tertiary-700 mb-5"></i>
+        <h3 class="text-neutral-800 font-semibold text-lg">Motor Specialist</h3>
+        <p class="text-neutral-500 font-light mt-2">IA e machine learning para diagnóstico e manutenção preditiva.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm">
+        <i data-lucide="trending-up" class="w-9 h-9 text-positive-600 mb-5"></i>
+        <h3 class="text-neutral-800 font-semibold text-lg">Ganho operacional</h3>
+        <p class="text-neutral-500 font-light mt-2">Menos paradas não planejadas e mais previsibilidade de entrega.</p>
+      </div>
+    </div>
+    <p class="mt-10 text-neutral-400 text-sm font-light">Nota: esta informação não pôde ser totalmente confirmada no momento da geração (ganhos operacionais variam conforme a planta).</p>
+  </section>
+
+  <!-- SLIDE 9 — ATO 3: Síntese das 3 mensagens -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <span class="inline-flex items-center gap-2 text-primary-700 font-semibold mb-4"><i data-lucide="list-checks" class="w-5 h-5"></i> ATO 3 · Síntese</span>
+    <h2 class="text-neutral-800 font-bold mb-12" style="font-size:clamp(1.9rem,3.8vw,3rem)">Três ideias para levar desta sala.</h2>
+    <div class="space-y-5 max-w-4xl">
+      <div class="flex items-center gap-6 bg-white rounded-xl p-6 border border-neutral-200">
+        <span class="text-primary-700 font-bold shrink-0" style="font-size:clamp(2rem,3vw,2.75rem)">1</span>
+        <p class="text-neutral-700 font-medium" style="font-size:clamp(1.1rem,1.8vw,1.4rem)">Digitalizar a linha do W22 é proteger o coração do nosso negócio.</p>
+      </div>
+      <div class="flex items-center gap-6 bg-white rounded-xl p-6 border border-neutral-200">
+        <span class="text-primary-700 font-bold shrink-0" style="font-size:clamp(2rem,3vw,2.75rem)">2</span>
+        <p class="text-neutral-700 font-medium" style="font-size:clamp(1.1rem,1.8vw,1.4rem)">O motor conectado transforma cada ativo em fonte de dados.</p>
+      </div>
+      <div class="flex items-center gap-6 bg-white rounded-xl p-6 border border-neutral-200">
+        <span class="text-primary-700 font-bold shrink-0" style="font-size:clamp(2rem,3vw,2.75rem)">3</span>
+        <p class="text-neutral-700 font-medium" style="font-size:clamp(1.1rem,1.8vw,1.4rem)">MES e IA convertem dados em decisões no chão de fábrica.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — ATO 3: Chamada para ação -->
+  <section class="slide justify-center bg-primary-700" style="background:#00579D">
+    <div class="max-w-4xl">
+      <span class="inline-flex items-center gap-2 text-primary-100 font-semibold mb-6"><i data-lucide="flag" class="w-5 h-5"></i> ATO 3 · Chamada para ação</span>
+      <h2 class="text-white font-bold leading-tight" style="font-size:clamp(2rem,4.2vw,3.5rem)">
+        Aprovar a Fase 1 do roadmap: linha-piloto do W22 conectada em 12 meses.
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
+        <div class="bg-primary-800 rounded-xl p-6 border border-primary-600">
+          <i data-lucide="target" class="w-7 h-7 text-secondary-400 mb-3"></i>
+          <p class="text-white font-semibold">Sensorizar a linha-piloto</p>
+        </div>
+        <div class="bg-primary-800 rounded-xl p-6 border border-primary-600">
+          <i data-lucide="server" class="w-7 h-7 text-secondary-400 mb-3"></i>
+          <p class="text-white font-semibold">Implantar MES + painéis de OEE</p>
+        </div>
+        <div class="bg-primary-800 rounded-xl p-6 border border-primary-600">
+          <i data-lucide="repeat" class="w-7 h-7 text-secondary-400 mb-3"></i>
+          <p class="text-white font-semibold">Escalar para as demais linhas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 — ONE MORE THING -->
+  <section class="slide justify-center">
+    <svg class="deck-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <div class="max-w-4xl">
+      <span class="inline-flex items-center gap-2 text-secondary-600 font-semibold mb-6"><i data-lucide="lightbulb" class="w-5 h-5"></i> One More Thing</span>
+      <h2 class="text-neutral-800 font-bold leading-tight" style="font-size:clamp(2rem,4.2vw,3.5rem)">
+        A fábrica digital não é um projeto de TI. É o novo produto que vendemos.
+      </h2>
+      <p class="mt-8 text-neutral-500 font-light max-w-3xl" style="font-size:clamp(1.1rem,1.9vw,1.5rem)">
+        Quando o motor sai conectado, deixamos de vender uma máquina e passamos a vender confiabilidade monitorada ao longo de toda a vida do ativo.
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 — ENCERRAMENTO -->
+  <section class="slide justify-center bg-neutral-900" style="background:#0F172A">
+    <svg class="deck-logo" style="opacity:1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#3DA9FF"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    <div class="max-w-4xl">
+      <h2 class="text-white font-bold leading-tight" style="font-size:clamp(2.25rem,5vw,4rem)">
+        O futuro da fábrica não se espera. Se constrói — um motor conectado por vez.
+      </h2>
+      <p class="mt-8 text-neutral-300 font-light" style="font-size:clamp(1.1rem,1.9vw,1.4rem)">Obrigado. Vamos construir a próxima linha juntos.</p>
+      <div class="mt-12 pt-8 border-t border-neutral-700">
+        <p class="text-neutral-400 font-semibold mb-3 text-sm uppercase tracking-wider">Fontes consultadas</p>
+        <ul class="text-neutral-400 font-light text-sm space-y-1.5">
+          <li>WEG — História / Linha do Tempo e "Isto é WEG" (weg.net/institutional).</li>
+          <li>WEG — Catálogos e brochuras do motor W22 e W22 Magnet Drive System (weg.net / static.weg.net).</li>
+          <li>WEG — PC-Factory MES 4.0, WEGscan e WEG Motor Scan / Motor Specialist (weg.net/digital e weg.net/wegmotorscan).</li>
+          <li>Omdia (2025), via Época Negócios — liderança global em motores de baixa tensão (~16%).</li>
+          <li>Estadão e clickpetroleoegas.com.br — 64 fábricas em 17 países.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Controles de rodapé -->
+<div class="no-print fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white/95 backdrop-blur rounded-full shadow-lg border border-neutral-200 px-4 py-2 z-50">
+  <button id="prevBtn" class="w-10 h-10 rounded-full hover:bg-neutral-100 flex items-center justify-center text-primary-700 transition" aria-label="Anterior">
+    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+  </button>
+  <span id="pagination" class="text-neutral-600 font-semibold text-sm tabular-nums min-w-[52px] text-center">1 / 12</span>
+  <button id="nextBtn" class="w-10 h-10 rounded-full hover:bg-neutral-100 flex items-center justify-center text-primary-700 transition" aria-label="Próximo">
+    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+  </button>
+</div>
+
+<script>
+  let current = 0;
+
+  function getSlides() { return document.querySelectorAll('#deck > .slide'); }
+
+  function animateCounts(slide) {
+    const counters = slide.querySelectorAll('[data-count]');
+    counters.forEach(el => {
+      const target = parseFloat(el.getAttribute('data-count'));
+      const duration = 1000;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(target * eased);
+        el.textContent = val;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target;
+      }
+      el.textContent = '0';
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function showSlide(index) {
+    const slides = getSlides();
+    if (index < 0) index = 0;
+    if (index >= slides.length) index = slides.length - 1;
+    current = index;
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    const total = slides.length;
+    document.getElementById('pagination').textContent = (index + 1) + ' / ' + total;
+    document.getElementById('progressBar').style.width = ((index + 1) / total * 100) + '%';
+    animateCounts(slides[index]);
+  }
+
+  function next() { showSlide(current + 1); }
+  function prev() { showSlide(current - 1); }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+  }, { passive: true });
+
+  // Impressão: mostrar valores finais
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('[data-count]').forEach(el => {
+      el.textContent = el.getAttribute('data-count');
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    showSlide(0);
+  });
+</script>
+
+
+</body></html>

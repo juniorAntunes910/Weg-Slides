@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eficiência Energética com Motores de Alto Rendimento</title>
+  
+  <!-- CDNs Obrigatórias -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://unpkg.com/lucide@1.65.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": {
+              "50": "#F0F5FA",
+              "100": "#E2EEF8",
+              "200": "#BBDCF7",
+              "300": "#81C3F8",
+              "400": "#3DA9FF",
+              "500": "#0A92FF",
+              "600": "#007CE0",
+              "700": "#00579D",
+              "800": "#005599",
+              "900": "#00447A"
+            },
+            "secondary": {
+              "50": "#FAF6F0",
+              "100": "#F8F0E2",
+              "200": "#F6E1BC",
+              "300": "#F7CD82",
+              "400": "#FDB93F",
+              "500": "#FCA60D",
+              "600": "#DE8F03",
+              "700": "#FCA304",
+              "800": "#976202",
+              "900": "#794E01"
+            },
+            "tertiary": {
+              "50": "#F5F3F6",
+              "100": "#EEEAF1",
+              "200": "#DACFE2",
+              "300": "#BFAACF",
+              "400": "#A280BC",
+              "500": "#8A5EAB",
+              "600": "#754D93",
+              "700": "#9F7BBA",
+              "800": "#503564",
+              "900": "#402A50"
+            },
+            "positive": {
+              "50": "#EFFEF5",
+              "100": "#D9FFE9",
+              "200": "#7DF8B2",
+              "300": "#7DF8B2",
+              "400": "#3DEB89",
+              "500": "#13CE66",
+              "600": "#09B054",
+              "700": "#0B8A45",
+              "800": "#0F6C39",
+              "900": "#0E5932"
+            },
+            "negative": {
+              "50": "#FFF1F1",
+              "100": "#FFDFDF",
+              "200": "#FFC5C5",
+              "300": "#FF9D9D",
+              "400": "#FF6464",
+              "500": "#FF4949",
+              "600": "#ED1515",
+              "700": "#C80D0D",
+              "800": "#A50F0F",
+              "900": "#881414"
+            },
+            "warning": {
+              "50": "#FFFFE7",
+              "100": "#FEFFC1",
+              "200": "#FFFD86",
+              "300": "#FFF441",
+              "400": "#FFE50D",
+              "500": "#FFD600",
+              "600": "#D19D00",
+              "700": "#A67102",
+              "800": "#89570A",
+              "900": "#74470F"
+            },
+            "info": {
+              "50": "#EBFDFF",
+              "100": "#CDF6FF",
+              "200": "#8AE8FF",
+              "300": "#62DDFE",
+              "400": "#1BC4F5",
+              "500": "#00A7DB",
+              "600": "#0284B8",
+              "700": "#0A6A94",
+              "800": "#125778",
+              "900": "#134766"
+            },
+            "neutral": {
+              "50": "#F8FAFC",
+              "100": "#F1F5F9",
+              "200": "#E2E8F0",
+              "300": "#CBD5E1",
+              "400": "#94A3B8",
+              "500": "#64748B",
+              "600": "#475569",
+              "700": "#334155",
+              "800": "#1E293B",
+              "900": "#0F172A"
+            }
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #0F172A;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #deck-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 1920px;
+      max-height: 1080px;
+      background-color: #F8FAFC;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+      background-color: #F8FAFC;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 10;
+    }
+
+    /* Impressão / Exportação PDF */
+    @media print {
+      @page {
+        size: 13.333in 7.5in;
+        margin: 0;
+      }
+      body, #deck-container {
+        height: auto !important;
+        width: auto !important;
+        overflow: visible !important;
+        background: white !important;
+      }
+      #deck {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+      .slide {
+        position: relative !important;
+        inset: auto !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 13.333in !important;
+        height: 7.5in !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        padding: 3rem !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-neutral-900 antialiased selection:bg-primary-200">
+
+  <!-- Barra de Progresso Fina no Topo -->
+  <div class="no-print fixed top-0 left-0 right-0 h-1.5 bg-neutral-200 z-50">
+    <div id="progress-bar" class="h-full bg-primary-700 transition-all duration-300 w-0"></div>
+  </div>
+
+  <div id="deck-container">
+    <main id="deck">
+
+      <!-- SLIDE 1: CAPA -->
+      <section class="slide active justify-between">
+        <header class="flex justify-between items-center w-full">
+          <div class="w-28 text-primary-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" class="w-full h-auto fill-current">
+              <g><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g>
+            </svg>
+          </div>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-100 text-primary-700 border border-primary-200">
+            <i data-lucide="zap" class="w-4 h-4"></i> Eficiência Industrial
+          </span>
+        </header>
+
+        <div class="my-auto max-w-4xl">
+          <h1 class="text-6xl font-bold tracking-tight text-primary-700 leading-none mb-6">
+            O Futuro da Eficiência Energética Industrial
+          </h1>
+          <p class="text-2xl font-normal text-neutral-600 leading-relaxed max-w-3xl">
+            Transformando custos operacionais em margem competitiva através da modernização de motores de alto rendimento.
+          </p>
+        </div>
+
+        <footer class="flex justify-between items-end border-t border-neutral-200 pt-6">
+          <div>
+            <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Apresentado para</p>
+            <p class="text-sm font-semibold text-neutral-700">Gestores Industriais & Equipe Comercial</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Data</p>
+            <p class="text-sm font-semibold text-neutral-700">5 de novembro de 2026</p>
+          </div>
+        </footer>
+      </section>
+
+      <!-- SLIDE 2: AGENDA & DESAFIO (ATO 1) -->
+      <section class="slide">
+        <header class="flex justify-between items-center w-full">
+          <div class="flex items-center gap-3">
+            <div class="w-8 text-primary-700">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" class="w-full h-auto fill-current">
+                <g><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g>
+              </svg>
+            </div>
+            <span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Ato 1 — Contexto & Agenda</span>
+          </div>
+        </header>
+
+        <div class="grid grid-cols-12 gap-12 my-auto">
+          <div class="col-span-5 flex flex-col justify-center border-r border-neutral-200 pr-8">
+            <h2 class="text-4xl font-bold text-primary-700 mb-4 leading-tight">O Gargalo Invisível das Fábricas</h2>
+            <p class="text-base text-neutral-600 mb-6">Motores elétricos representam a espinha dorsal da indústria moderna, porém são os maiores devoradores de energia elétrica da planta.</p>
+            <div class="p-6 bg-primary-50 rounded-xl border border-primary-100">
+              <div class="text-5xl font-bold text-primary-700 mb-1"><span data-count="70">70</span>%</div>
+              <div class="text-sm font-semibold text-primary-900">Do consumo de energia elétrica industrial vem dos motores.</div>
+            </div>
+          </div>
+
+          <div class="col-span-7 flex flex-col justify-center">
+            <p class="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-4">Jornada da Apresentação</p>
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 p-4 rounded-xl bg-white border border-neutral-200 shadow-sm">
+                <div class="p-2 bg-primary-100 text-primary-700 rounded-lg shrink-0">
+                  <i data-lucide="trending-down" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-neutral-800">1. Redução de OPEX & TCO</h3>
+                  <p class="text-sm text-neutral-500">O impacto direto da energia elétrica no Custo Total de Propriedade.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4 rounded-xl bg-white border border-neutral-200 shadow-sm">
+                <div class="p-2 bg-secondary-100 text-secondary-700 rounded-lg shrink-0">
+                  <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-neutral-800">2. Tecnologia IE4 e IE5</h3>
+                  <p class="text-sm text-neutral-500">Superando padrões regulatórios com tecnologia de altíssimo rendimento.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4 rounded-xl bg-white border border-neutral-200 shadow-sm">
+                <div class="p-2 bg-positive-100 text-positive-700 rounded-lg shrink-0">
+                  <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-neutral-800">3. Impacto ESG & Retorno Rápidos</h3>
+                  <p class="text-sm text-neutral-500">Descarbonização mensurável com payback atrativo e confiabilidade.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="flex justify-between items-center text-xs text-neutral-400 border-t border-neutral-200 pt-4">
+          <span>Eficiência Energética Industrial</span>
+          <span>Nota: esta informação não pôde ser totalmente confirmada no momento da geração.</span>
+        </footer>
+      </section>
+
+      <!-- SLIDE 3: PILAR 1 - OPEX & TCO (ATO 2) -->
+      <section class="slide">
+        <header class="flex justify-between items-center w-full">
+          <div class="flex items-center gap-3">
+            <div class="w-8 text-primary-700">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" class="w-full h-auto fill-current">
+                <g><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g>
+              </svg>
+            </div>
+            <span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Ato 2 — Pilar 1: Custo Total de Propriedade</span>
+          </div>
+        </header>
+
+        <div class="my-auto">
+          <div class="max-w-3xl mb-8">
+            <h2 class="text-4xl font-bold text-primary-700 mb-3">O Preço de Aquisição é Apenas a Ponta do Iceberg</h2>
+            <p class="text-lg text-neutral-600">Ao longo da vida útil de um motor industrial em operação contínua, o custo de energia elétrica eclipsa completamente o valor inicial de compra.</p>
+          </div>
+
+          <div class="grid grid-cols-12 gap-8 items-center">
+            <!-- TCO Breakdown Card -->
+            <div class="col-span-7 bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
+              <h3 class="text-sm font-bold text-neutral-400 uppercase tracking-wider mb-4">Composição do TCO (Vida Útil de 10 Anos)</h3>
+              
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-sm font-semibold mb-1">
+                    <span class="text-primary-700">Energia Elétrica Operacional</span>
+                    <span class="text-primary-700 font-bold"><span data-count="90">90</span>% +</span>
+                  </div>
+                  <div class="w-full h-4 bg-neutral-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary-700 rounded-full" style="width: 92%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-sm font-semibold mb-1">
+                    <span class="text-neutral-600">Manutenção & Reparos</span>
+                    <span class="text-neutral-600">5%</span>
+                  </div>
+                  <div class="w-full h-3 bg-neutral-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-neutral-400 rounded-full" style="width: 5%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-sm font-semibold mb-1">
+                    <span class="text-neutral-600">Custo de Aquisição Inicial</span>
+                    <span class="text-neutral-600">3%</span>
+                  </div>
+                  <div class="w-full h-3 bg-neutral-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-neutral-300 rounded-full" style="width: 3%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric Box -->
+            <div class="col-span-5 space-y-4">
+              <div class="p-6 bg-positive-50 rounded-xl border border-positive-200">
+                <span class="text-xs font-bold text-positive-800 uppercase tracking-wider">Payback Médio</span>
+                <div class="text-5xl font-bold text-positive-700 my-2"><span data-count="14">14</span> Meses</div>
+                <p class="text-xs text-positive-800">O investimento na substituição por motores de alto rendimento se paga rapidamente com a economia de energia.</p>
+              </div>
+
+              <div class="p-4 bg-neutral-100 rounded-xl border border-neutral-200 text-neutral-600 text-xs">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1 text-primary-700"></i>
+                Economizar 3% de eficiência em um motor de grande porte pode gerar dezenas de milhares de reais de economia anual.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="flex justify-between items-center text-xs text-neutral-400 border-t border-neutral-200 pt-4">
+          <span>Eficiência Energética Industrial</span>
+          <span>Nota: esta informação não pude ser totalmente confirmada no momento da geração.</span>
+        </footer>
+      </section>
+
+      <!-- SLIDE 4: PILAR 2 & 3 - TECNOLOGIA IE4/IE5 E ESG (ATO 2) -->
+      <section class="slide">
+        <header class="flex justify-between items-center w-full">
+          <div class="flex items-center gap-3">
+            <div class="w-8 text-primary-700">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" class="w-full h-auto fill-current">
+                <g><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g>
+              </svg>
+            </div>
+            <span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Ato 2 — Pilares 2 & 3: Tecnologia & Sustentabilidade</span>
+          </div>
+        </header>
+
+        <div class="my-auto">
+          <h2 class="text-4xl font-bold text-primary-700 mb-6">Salto de Performance e Descarbonização</h2>
+
+          <div class="grid grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 bg-primary-100 text-primary-700 rounded-lg flex items-center justify-center mb-4">
+                  <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-neutral-800 mb-2">Conformidade IE4 / IE5</h3>
+                <p class="text-sm text-neutral-600">Redução de até 40% nas perdas de energia em relação à classe IE2/IE3 convencional.</p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-neutral-100 text-2xl font-bold text-primary-700">
+                -<span data-count="40">40</span>% <span class="text-xs font-normal text-neutral-500">perdas elétricas</span>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 bg-secondary-100 text-secondary-700 rounded-lg flex items-center justify-center mb-4">
+                  <i data-lucide="thermometer-snowflake" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-neutral-800 mb-2">Confiabilidade Operacional</h3>
+                <p class="text-sm text-neutral-600">Menor aquecimento operacional prolonga a vida útil dos isolamentos e rolamentos.</p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-neutral-100 text-2xl font-bold text-secondary-700">
+                +<span data-count="25">25</span>% <span class="text-xs font-normal text-neutral-500">vida útil estimada</span>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 bg-positive-100 text-positive-700 rounded-lg flex items-center justify-center mb-4">
+                  <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-neutral-800 mb-2">Impacto ESG Mensurável</h3>
+                <p class="text-sm text-neutral-600">Menos consumo de rede se traduz diretamente em redução de emissões indiretas de CO₂ (Escopo 2).</p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-neutral-100 text-2xl font-bold text-positive-700">
+                -<span data-count="18">18</span>% <span class="text-xs font-normal text-neutral-500">pegada de carbono</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="flex justify-between items-center text-xs text-neutral-400 border-t border-neutral-200 pt-4">
+          <span>Eficiência Energética Industrial</span>
+          <span>Nota: esta informação não pôde ser totalmente confirmada no momento da geração.</span>
+        </footer>
+      </section>
+
+      <!-- SLIDE 5: SÍNTESE, CTA, ONE MORE THING E ENCERRAMENTO (ATO 3) -->
+      <section class="slide justify-between">
+        <header class="flex justify-between items-center w-full">
+          <div class="w-10 text-primary-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" class="w-full h-auto fill-current">
+              <g><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g>
+            </svg>
+          </div>
+          <span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Ato 3 — Conclusão & Próximos Passos</span>
+        </header>
+
+        <div class="grid grid-cols-12 gap-8 items-center my-auto">
+          <div class="col-span-7">
+            <h2 class="text-4xl font-bold text-primary-700 mb-6">Três Pilares para Transformação Imediata</h2>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center gap-3 text-neutral-700 font-medium text-base">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-positive-600 shrink-0"></i>
+                <span><strong>Redução drástica do OPEX:</strong> O investimento retorna via conta de energia.</span>
+              </li>
+              <li class="flex items-center gap-3 text-neutral-700 font-medium text-base">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-positive-600 shrink-0"></i>
+                <span><strong>Confiabilidade Operacional:</strong> Menos paradas não planejadas e manutenção preventiva.</span>
+              </li>
+              <li class="flex items-center gap-3 text-neutral-700 font-medium text-base">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-positive-600 shrink-0"></i>
+                <span><strong>Meta ESG Atingível:</strong> Redução real de CO₂ sem sacrificar produtividade.</span>
+              </li>
+            </ul>
+
+            <div class="inline-block p-4 bg-primary-700 text-white rounded-xl font-semibold shadow-md">
+              Chamada para Ação: Iniciar auditoria do parque fabril instalado neste trimestre.
+            </div>
+          </div>
+
+          <!-- One More Thing Box -->
+          <div class="col-span-5 bg-tertiary-50 p-6 rounded-2xl border border-tertiary-200">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-tertiary-200 text-tertiary-800 mb-3">
+              💡 One More Thing
+            </span>
+            <h3 class="text-xl font-bold text-tertiary-900 mb-2">Linhas de Crédito Verde & Subvenção</h3>
+            <p class="text-sm text-tertiary-800 leading-relaxed">
+              Modelos de financiamento sustentável (Green Bonds & EE Line) conseguem amortizar até <strong>80% do CAPEX inicial</strong> com taxas reduzidas, permitindo payback neutro desde o mês 1.
+            </p>
+          </div>
+        </div>
+
+        <footer class="flex justify-between items-end border-t border-neutral-200 pt-4">
+          <div>
+            <p class="text-xs font-bold text-neutral-400">Fontes & Referências</p>
+            <p class="text-xs text-neutral-500">Conhecimento geral consolidado de engenharia de aplicação e normas internacionais IEC 60034-30-1.</p>
+          </div>
+          <p class="text-xs text-neutral-400">Nota: esta informação não pôde ser totalmente confirmada no momento da geração.</p>
+        </footer>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- NAVEGAÇÃO E CONTROLES (FORA DO DECK / NO-PRINT) -->
+  <div class="no-print fixed bottom-6 right-8 z-50 flex items-center gap-4 bg-neutral-900/80 backdrop-blur-md px-4 py-2 rounded-full text-white shadow-lg border border-neutral-700">
+    <button id="prev-btn" class="p-1.5 hover:bg-neutral-700 rounded-full transition" aria-label="Slide Anterior">
+      <i data-lucide="chevron-left" class="w-5 h-5"></i>
+    </button>
+    <span id="slide-indicator" class="text-xs font-semibold tracking-wider font-mono">1 / 5</span>
+    <button id="next-btn" class="p-1.5 hover:bg-neutral-700 rounded-full transition" aria-label="Próximo Slide">
+      <i data-lucide="chevron-right" class="w-5 h-5"></i>
+    </button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Inicializar Ícones Lucide
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+
+      let slides = document.querySelectorAll('#deck > .slide');
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+
+      const progressBar = document.getElementById('progress-bar');
+      const slideIndicator = document.getElementById('slide-indicator');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+
+      function animateCounters(slideElement) {
+        const counters = slideElement.querySelectorAll('[data-count]');
+        counters.forEach(c => {
+          const target = parseInt(c.getAttribute('data-count'), 10);
+          if (isNaN(target)) return;
+          let current = 0;
+          const step = Math.max(1, Math.ceil(target / 25));
+          c.textContent = '0';
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              c.textContent = target;
+              clearInterval(timer);
+            } else {
+              c.textContent = current;
+            }
+          }, 30);
+        });
+      }
+
+      function updateSlide(index) {
+        slides.forEach((slide, i) => {
+          if (i === index) {
+            slide.classList.add('active');
+            animateCounters(slide);
+          } else {
+            slide.classList.remove('active');
+          }
+        });
+
+        // Atualizar barra de progresso
+        const progressPercentage = ((index + 1) / totalSlides) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+
+        // Atualizar indicador "X / N"
+        slideIndicator.textContent = `${index + 1} / ${totalSlides}`;
+      }
+
+      function nextSlide() {
+        slides = document.querySelectorAll('#deck > .slide');
+        if (currentIndex < slides.length - 1) {
+          currentIndex++;
+          updateSlide(currentIndex);
+        }
+      }
+
+      function prevSlide() {
+        slides = document.querySelectorAll('#deck > .slide');
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateSlide(currentIndex);
+        }
+      }
+
+      // Event Listeners de Botões
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      // Event Listeners de Teclado
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+          nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          prevSlide();
+        }
+      });
+
+      // Suporte a gestos Touch (Swipe)
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, false);
+
+      document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, false);
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+          prevSlide();
+        }
+      }
+
+      // Inicializar o primeiro slide
+      updateSlide(currentIndex);
+
+      // Evento beforeprint para exportação em PDF
+      window.addEventListener('beforeprint', () => {
+        document.querySelectorAll('[data-count]').forEach(c => {
+          c.textContent = c.getAttribute('data-count');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motores Comerciais e Appliance | WEG</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script src="https://unpkg.com/lucide@1.65.0/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+  "primary": {
+    "50": "#F0F5FA",
+    "100": "#E2EEF8",
+    "200": "#BBDCF7",
+    "300": "#81C3F8",
+    "400": "#3DA9FF",
+    "500": "#0A92FF",
+    "600": "#007CE0",
+    "700": "#00579D",
+    "800": "#005599",
+    "900": "#00447A"
+  },
+  "secondary": {
+    "50": "#FAF6F0",
+    "100": "#F8F0E2",
+    "200": "#F6E1BC",
+    "300": "#F7CD82",
+    "400": "#FDB93F",
+    "500": "#FCA60D",
+    "600": "#DE8F03",
+    "700": "#FCA304",
+    "800": "#976202",
+    "900": "#794E01"
+  },
+  "tertiary": {
+    "50": "#F5F3F6",
+    "100": "#EEEAF1",
+    "200": "#DACFE2",
+    "300": "#BFAACF",
+    "400": "#A280BC",
+    "500": "#8A5EAB",
+    "600": "#754D93",
+    "700": "#9F7BBA",
+    "800": "#503564",
+    "900": "#402A50"
+  },
+  "positive": {
+    "50": "#EFFEF5",
+    "100": "#D9FFE9",
+    "200": "#7DF8B2",
+    "300": "#7DF8B2",
+    "400": "#3DEB89",
+    "500": "#13CE66",
+    "600": "#09B054",
+    "700": "#0B8A45",
+    "800": "#0F6C39",
+    "900": "#0E5932"
+  },
+  "negative": {
+    "50": "#FFF1F1",
+    "100": "#FFDFDF",
+    "200": "#FFC5C5",
+    "300": "#FF9D9D",
+    "400": "#FF6464",
+    "500": "#FF4949",
+    "600": "#ED1515",
+    "700": "#C80D0D",
+    "800": "#A50F0F",
+    "900": "#881414"
+  },
+  "warning": {
+    "50": "#FFFFE7",
+    "100": "#FEFFC1",
+    "200": "#FFFD86",
+    "300": "#FFF441",
+    "400": "#FFE50D",
+    "500": "#FFD600",
+    "600": "#D19D00",
+    "700": "#A67102",
+    "800": "#89570A",
+    "900": "#74470F"
+  },
+  "info": {
+    "50": "#EBFDFF",
+    "100": "#CDF6FF",
+    "200": "#8AE8FF",
+    "300": "#62DDFE",
+    "400": "#1BC4F5",
+    "500": "#00A7DB",
+    "600": "#0284B8",
+    "700": "#0A6A94",
+    "800": "#125778",
+    "900": "#134766"
+  },
+  "neutral": {
+    "50": "#F8FAFC",
+    "100": "#F1F5F9",
+    "200": "#E2E8F0",
+    "300": "#CBD5E1",
+    "400": "#94A3B8",
+    "500": "#64748B",
+    "600": "#475569",
+    "700": "#334155",
+    "800": "#1E293B",
+    "900": "#0F172A"
+  }
+},
+      fontFamily: { sans: ['Inter', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  html, body { height: 100%; margin: 0; }
+  body { font-family: 'Inter', sans-serif; background: #F8FAFC; overflow: hidden; }
+  #deck { position: fixed; inset: 0; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .6s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 5rem);
+  }
+  .slide.active { opacity: 1; visibility: visible; }
+  .corner-logo { position: absolute; top: clamp(1.5rem,3vw,2.5rem); right: clamp(1.5rem,3vw,2.5rem); }
+  .corner-logo svg { height: clamp(26px, 3vw, 34px); width: auto; }
+
+  @media print {
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html, body { height: auto; overflow: visible; }
+    #deck { position: static; }
+    .slide {
+      position: relative !important;
+      inset: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      width: 13.333in;
+      height: 7.5in;
+      break-after: page;
+      page-break-after: always;
+      transform: none !important;
+    }
+    .no-print { display: none !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Barra de progresso -->
+<div class="no-print" style="position:fixed;top:0;left:0;right:0;height:4px;background:#E2E8F0;z-index:50;">
+  <div id="progressBar" style="height:100%;width:0;background:#00579D;transition:width .4s ease;"></div>
+</div>
+
+<main id="deck">
+
+  <!-- SLIDE 1 — CAPA -->
+  <section class="slide active" style="background:#00579D;color:#fff;align-items:flex-start;">
+    <div style="position:absolute;top:clamp(2rem,5vw,4rem);left:clamp(2rem,5vw,5rem);">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" style="height:56px;width:auto;"><g fill="#ffffff"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    </div>
+    <div style="max-width:70%;">
+      <p class="font-medium" style="color:#81C3F8;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(.8rem,1.3vw,1rem);margin-bottom:1.5rem;">Motores Comerciais e Appliance</p>
+      <h1 class="font-bold" style="font-size:clamp(2.6rem,6vw,5rem);line-height:1.05;">O motor por trás do cotidiano</h1>
+      <p class="font-light" style="font-size:clamp(1.1rem,2.2vw,1.8rem);color:#E2EEF8;margin-top:1.5rem;max-width:46ch;">Da origem em Jaraguá do Sul à liderança global em eficiência energética com o W22.</p>
+    </div>
+    <div style="position:absolute;bottom:clamp(2rem,5vw,4rem);left:clamp(2rem,5vw,5rem);display:flex;align-items:center;gap:.6rem;color:#BBDCF7;">
+      <i data-lucide="calendar" style="width:18px;height:18px;"></i>
+      <span class="font-medium" style="font-size:clamp(.9rem,1.4vw,1.05rem);">3 de novembro de 2026 · Apresentação à Diretoria</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — AGENDA -->
+  <section class="slide" style="background:#F8FAFC;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#00579D;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Agenda</p>
+    <h2 class="font-bold" style="font-size:clamp(2rem,4.2vw,3.4rem);margin-bottom:2.5rem;">Três ideias para levar desta sala</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.5vw,2rem);">
+      <div style="background:#fff;border:1px solid #E2E8F0;border-top:4px solid #00579D;border-radius:12px;padding:clamp(1.5rem,2.5vw,2rem);">
+        <i data-lucide="building-2" style="width:34px;height:34px;color:#00579D;"></i>
+        <p class="font-bold" style="font-size:clamp(1.1rem,1.8vw,1.4rem);margin-top:1rem;color:#00579D;">01 · Escala global</p>
+        <p class="font-light" style="font-size:clamp(.9rem,1.3vw,1.05rem);color:#475569;margin-top:.5rem;">Uma base industrial que produz confiança em escala mundial.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-top:4px solid #FCA60D;border-radius:12px;padding:clamp(1.5rem,2.5vw,2rem);">
+        <i data-lucide="cog" style="width:34px;height:34px;color:#DE8F03;"></i>
+        <p class="font-bold" style="font-size:clamp(1.1rem,1.8vw,1.4rem);margin-top:1rem;color:#976202;">02 · O W22</p>
+        <p class="font-light" style="font-size:clamp(.9rem,1.3vw,1.05rem);color:#475569;margin-top:.5rem;">Um produto que une robustez, versatilidade e eficiência.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-top:4px solid #8A5EAB;border-radius:12px;padding:clamp(1.5rem,2.5vw,2rem);">
+        <i data-lucide="sparkles" style="width:34px;height:34px;color:#754D93;"></i>
+        <p class="font-bold" style="font-size:clamp(1.1rem,1.8vw,1.4rem);margin-top:1rem;color:#503564;">03 · Eficiência</p>
+        <p class="font-light" style="font-size:clamp(.9rem,1.3vw,1.05rem);color:#475569;margin-top:.5rem;">Inovação que transforma consumo de energia em vantagem.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — ATO 1: CONTEXTO / HISTÓRICO -->
+  <section class="slide" style="background:#fff;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,4vw,4rem);align-items:center;">
+      <div>
+        <p class="font-medium" style="color:#00579D;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ato 1 · Origem</p>
+        <h2 class="font-bold" style="font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;">De uma oficina em Jaraguá do Sul a uma potência global</h2>
+        <p class="font-light" style="font-size:clamp(1rem,1.6vw,1.25rem);color:#475569;margin-top:1.2rem;max-width:44ch;">Fundada em 1961 como Eletromotores Jaraguá, a WEG começou fabricando motores e expandiu para automação, energia e soluções eletroeletrônicas.</p>
+      </div>
+      <div style="border-left:3px solid #E2E8F0;padding-left:clamp(1.2rem,2vw,2rem);display:flex;flex-direction:column;gap:1.1rem;">
+        <div><p class="font-bold" style="font-size:clamp(1.2rem,2vw,1.5rem);color:#00579D;">1961</p><p class="font-light" style="color:#475569;font-size:clamp(.85rem,1.3vw,1rem);">Fundação em Santa Catarina.</p></div>
+        <div><p class="font-bold" style="font-size:clamp(1.2rem,2vw,1.5rem);color:#00579D;">1970s</p><p class="font-light" style="color:#475569;font-size:clamp(.85rem,1.3vw,1rem);">Exportações e padronização técnica.</p></div>
+        <div><p class="font-bold" style="font-size:clamp(1.2rem,2vw,1.5rem);color:#00579D;">2020+</p><p class="font-light" style="color:#475569;font-size:clamp(.85rem,1.3vw,1rem);">Eficiência energética e digitalização.</p></div>
+        <div><p class="font-bold" style="font-size:clamp(1.2rem,2vw,1.5rem);color:#FCA60D;">2026</p><p class="font-light" style="color:#475569;font-size:clamp(.85rem,1.3vw,1rem);">Lançamento do W22 Prime, até IE5.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — ATO 2 / IDEIA 1: ESCALA (números) -->
+  <section class="slide" style="background:#00579D;color:#fff;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#ffffff"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#81C3F8;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ideia 1 · Escala global</p>
+    <h2 class="font-bold" style="font-size:clamp(1.9rem,3.6vw,3rem);margin-bottom:2.5rem;max-width:30ch;">Uma base industrial que entrega confiança em escala</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,3vw,3rem);">
+      <div>
+        <p class="font-bold" style="font-size:clamp(2.4rem,5vw,4rem);line-height:1;"><span data-count="19">19</span> mi+</p>
+        <p class="font-light" style="color:#BBDCF7;font-size:clamp(.9rem,1.4vw,1.1rem);margin-top:.5rem;">motores produzidos por ano</p>
+      </div>
+      <div>
+        <p class="font-bold" style="font-size:clamp(2.4rem,5vw,4rem);line-height:1;"><span data-count="18">18</span></p>
+        <p class="font-light" style="color:#BBDCF7;font-size:clamp(.9rem,1.4vw,1.1rem);margin-top:.5rem;">países com presença fabril</p>
+      </div>
+      <div>
+        <p class="font-bold" style="font-size:clamp(2.4rem,5vw,4rem);line-height:1;">R$ <span data-count="40.8">40.8</span> bi</p>
+        <p class="font-light" style="color:#BBDCF7;font-size:clamp(.9rem,1.4vw,1.1rem);margin-top:.5rem;">receita líquida em 2025</p>
+      </div>
+    </div>
+    <p class="font-light" style="color:#81C3F8;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:2.5rem;">Indicadores divulgados pela WEG referentes a 2025.</p>
+  </section>
+
+  <!-- SLIDE 5 — ATO 2 / IDEIA 1 APROFUNDAMENTO: ATUAÇÃO MCA -->
+  <section class="slide" style="background:#F8FAFC;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#00579D;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ideia 1 · Onde atuamos</p>
+    <h2 class="font-bold" style="font-size:clamp(1.9rem,3.6vw,2.9rem);margin-bottom:2rem;max-width:34ch;">Motores Comerciais e Appliance: presença no dia a dia</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.2rem,2.5vw,2rem);">
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:clamp(1.3rem,2.2vw,1.8rem);">
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;"><i data-lucide="washing-machine" style="width:28px;height:28px;color:#00579D;"></i><p class="font-bold" style="font-size:clamp(1.05rem,1.7vw,1.3rem);color:#00579D;">Appliance</p></div>
+        <p class="font-light" style="color:#475569;font-size:clamp(.9rem,1.3vw,1.05rem);">Lavadoras, secadoras, centrífugas e ar-condicionado, com tecnologias BLDC, ímãs permanentes e acionamento direto.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:clamp(1.3rem,2.2vw,1.8rem);">
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;"><i data-lucide="factory" style="width:28px;height:28px;color:#DE8F03;"></i><p class="font-bold" style="font-size:clamp(1.05rem,1.7vw,1.3rem);color:#976202;">Comerciais</p></div>
+        <p class="font-light" style="color:#475569;font-size:clamp(.9rem,1.3vw,1.05rem);">Bombas, ventilação, portões, betoneiras, máquinas de limpeza e aplicações rurais, incluindo versões monofásicas.</p>
+      </div>
+    </div>
+    <p class="font-light" style="color:#64748B;font-size:clamp(.9rem,1.3vw,1.1rem);margin-top:1.8rem;max-width:60ch;">A linha exige produtos compactos e confiáveis, com foco em consumo de energia e custo de fabricação.</p>
+  </section>
+
+  <!-- SLIDE 6 — ATO 2 / IDEIA 2: O W22 EM FOCO -->
+  <section class="slide" style="background:#fff;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <div style="display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,4vw,4rem);align-items:center;">
+      <div>
+        <p class="font-medium" style="color:#DE8F03;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ideia 2 · Produto em foco</p>
+        <h2 class="font-bold" style="font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;">W22 monofásico</h2>
+        <p class="font-light" style="font-size:clamp(1rem,1.7vw,1.3rem);color:#475569;margin-top:1rem;max-width:34ch;">Robustez de ferro fundido e proteção IP55 para aplicações comerciais e rurais.</p>
+        <div style="display:inline-flex;align-items:center;gap:.6rem;background:#F0F5FA;border:1px solid #BBDCF7;border-radius:999px;padding:.5rem 1.1rem;margin-top:1.5rem;">
+          <i data-lucide="shield-check" style="width:20px;height:20px;color:#00579D;"></i>
+          <span class="font-semibold" style="color:#00579D;font-size:clamp(.9rem,1.3vw,1.05rem);">Grau de proteção IP55</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(.9rem,1.8vw,1.4rem);">
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(1rem,1.8vw,1.4rem);">
+          <p class="font-light" style="color:#64748B;font-size:clamp(.78rem,1.1vw,.9rem);">Potência (uso rural)</p>
+          <p class="font-bold" style="color:#00579D;font-size:clamp(1.1rem,1.9vw,1.5rem);margin-top:.3rem;">1 a 12,5 cv</p>
+        </div>
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(1rem,1.8vw,1.4rem);">
+          <p class="font-light" style="color:#64748B;font-size:clamp(.78rem,1.1vw,.9rem);">Frequência</p>
+          <p class="font-bold" style="color:#00579D;font-size:clamp(1.1rem,1.9vw,1.5rem);margin-top:.3rem;">50 / 60 Hz</p>
+        </div>
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(1rem,1.8vw,1.4rem);">
+          <p class="font-light" style="color:#64748B;font-size:clamp(.78rem,1.1vw,.9rem);">Carcaça</p>
+          <p class="font-bold" style="color:#00579D;font-size:clamp(1.1rem,1.9vw,1.5rem);margin-top:.3rem;">Ferro fundido</p>
+        </div>
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(1rem,1.8vw,1.4rem);">
+          <p class="font-light" style="color:#64748B;font-size:clamp(.78rem,1.1vw,.9rem);">Capacitores</p>
+          <p class="font-bold" style="color:#00579D;font-size:clamp(1.1rem,1.9vw,1.5rem);margin-top:.3rem;">Partida / permanente</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — ATO 2 / IDEIA 2 APROFUNDAMENTO: APLICAÇÕES + CLIENTES -->
+  <section class="slide" style="background:#F8FAFC;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#DE8F03;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ideia 2 · Mercado</p>
+    <h2 class="font-bold" style="font-size:clamp(1.8rem,3.4vw,2.8rem);margin-bottom:1.8rem;max-width:36ch;">Quem confia e com quem competimos</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.2rem,2.5vw,2rem);">
+      <div style="background:#fff;border:1px solid #E2E8F0;border-top:4px solid #0B8A45;border-radius:12px;padding:clamp(1.3rem,2.2vw,1.8rem);">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;"><i data-lucide="handshake" style="width:26px;height:26px;color:#0B8A45;"></i><p class="font-bold" style="font-size:clamp(1.05rem,1.7vw,1.3rem);color:#0B8A45;">Principais clientes</p></div>
+        <ul class="font-light" style="color:#475569;font-size:clamp(.9rem,1.3vw,1.05rem);line-height:1.7;list-style:none;padding:0;margin:0;">
+          <li><span class="font-semibold" style="color:#0F172A;">Whirlpool</span> — Fornecedora do ano 2021 (tintas e motores).</li>
+          <li><span class="font-semibold" style="color:#0F172A;">Electrolux</span> — Melhor Fornecedor Global 2020.</li>
+          <li><span class="font-semibold" style="color:#0F172A;">DHTS</span> — 496 motores W22 em resfriamento.</li>
+        </ul>
+      </div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-top:4px solid #C80D0D;border-radius:12px;padding:clamp(1.3rem,2.2vw,1.8rem);">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;"><i data-lucide="swords" style="width:26px;height:26px;color:#C80D0D;"></i><p class="font-bold" style="font-size:clamp(1.05rem,1.7vw,1.3rem);color:#C80D0D;">Principais concorrentes</p></div>
+        <ul class="font-light" style="color:#475569;font-size:clamp(.9rem,1.3vw,1.05rem);line-height:1.7;list-style:none;padding:0;margin:0;">
+          <li><span class="font-semibold" style="color:#0F172A;">Nidec</span> — Appliance, climatização e bombas.</li>
+          <li><span class="font-semibold" style="color:#0F172A;">ABB</span> — Motores industriais de alta eficiência.</li>
+          <li><span class="font-semibold" style="color:#0F172A;">Siemens</span> — Família industrial SIMOTICS.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="font-light" style="color:#64748B;font-size:clamp(.78rem,1.05vw,.9rem);margin-top:1.4rem;">Exemplos de relações comerciais divulgadas, não um ranking oficial. Comparação baseada nos portfólios das fabricantes.</p>
+  </section>
+
+  <!-- SLIDE 8 — ATO 2 / IDEIA 3: INOVAÇÃO (número de impacto) -->
+  <section class="slide" style="background:#00579D;color:#fff;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#ffffff"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#81C3F8;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ideia 3 · Eficiência</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,4rem);align-items:center;">
+      <div>
+        <h2 class="font-bold" style="font-size:clamp(2rem,4vw,3.2rem);line-height:1.08;max-width:24ch;">Eficiência energética é a nova fronteira</h2>
+        <p class="font-light" style="font-size:clamp(1rem,1.6vw,1.25rem);color:#E2EEF8;margin-top:1.2rem;max-width:40ch;">O W22 Prime (2026) alcança classes IE4 e IE5 com tecnologia de indução, reduzindo consumo com partida direta ou inversor.</p>
+      </div>
+      <div style="text-align:center;">
+        <p class="font-bold" style="font-size:clamp(4rem,10vw,8rem);line-height:1;">IE<span data-count="5">5</span></p>
+        <p class="font-light" style="color:#BBDCF7;font-size:clamp(1rem,1.6vw,1.3rem);margin-top:.5rem;">classe de eficiência máxima da plataforma</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 — ATO 2 / IDEIA 3 APROFUNDAMENTO: ANTES x DEPOIS + INVESTIMENTOS -->
+  <section class="slide" style="background:#fff;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#754D93;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ideia 3 · Evidência</p>
+    <h2 class="font-bold" style="font-size:clamp(1.8rem,3.4vw,2.8rem);margin-bottom:1.8rem;max-width:40ch;">Inovação que vira economia e capacidade</h2>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(1.5rem,3vw,2.5rem);align-items:stretch;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div style="background:#FFF1F1;border:1px solid #FFC5C5;border-radius:12px;padding:clamp(1.1rem,2vw,1.6rem);">
+          <p class="font-semibold" style="color:#C80D0D;font-size:clamp(.8rem,1.2vw,.95rem);">Antes</p>
+          <p class="font-light" style="color:#881414;font-size:clamp(.9rem,1.3vw,1.05rem);margin-top:.5rem;">Conjunto de ventilação convencional, maior consumo elétrico.</p>
+        </div>
+        <div style="background:#EFFEF5;border:1px solid #7DF8B2;border-radius:12px;padding:clamp(1.1rem,2vw,1.6rem);">
+          <p class="font-semibold" style="color:#0B8A45;font-size:clamp(.8rem,1.2vw,.95rem);">Depois · W30 Smart EC</p>
+          <p class="font-bold" style="color:#0B8A45;font-size:clamp(1.6rem,3vw,2.4rem);margin-top:.3rem;">+<span data-count="48">48</span>%</p>
+          <p class="font-light" style="color:#0F6C39;font-size:clamp(.85rem,1.2vw,1rem);">economia de energia na Granja Ueyama (2025).</p>
+        </div>
+      </div>
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:clamp(1.2rem,2vw,1.6rem);display:flex;flex-direction:column;justify-content:center;gap:1.1rem;">
+        <div style="display:flex;align-items:flex-start;gap:.7rem;"><i data-lucide="banknote" style="width:24px;height:24px;color:#00579D;flex-shrink:0;"></i><p class="font-light" style="color:#475569;font-size:clamp(.88rem,1.3vw,1.02rem);"><span class="font-bold" style="color:#00579D;">R$ 48 mi</span> em Manaus (2023) para motores de ímãs permanentes de ar-condicionado split.</p></div>
+        <div style="display:flex;align-items:flex-start;gap:.7rem;"><i data-lucide="building" style="width:24px;height:24px;color:#00579D;flex-shrink:0;"></i><p class="font-light" style="color:#475569;font-size:clamp(.88rem,1.3vw,1.02rem);"><span class="font-bold" style="color:#00579D;">R$ 160 mi</span> em Linhares (2025), nova fábrica de fios, operação prevista para 2027.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — ATO 2 COMPLEMENTO: PROCESSO DE FABRICAÇÃO -->
+  <section class="slide" style="background:#F8FAFC;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#00579D;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Dos processos · Como nasce um motor</p>
+    <h2 class="font-bold" style="font-size:clamp(1.8rem,3.4vw,2.8rem);margin-bottom:2rem;max-width:40ch;">A qualidade está em cada etapa da fabricação</h2>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(.7rem,1.4vw,1rem);">
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(.9rem,1.5vw,1.2rem);"><i data-lucide="hammer" style="width:24px;height:24px;color:#00579D;"></i><p class="font-bold" style="color:#00579D;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:.6rem;">01 Peças</p><p class="font-light" style="color:#64748B;font-size:clamp(.72rem,1vw,.85rem);margin-top:.2rem;">Carcaças e eixos usinados.</p></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(.9rem,1.5vw,1.2rem);"><i data-lucide="disc-3" style="width:24px;height:24px;color:#00579D;"></i><p class="font-bold" style="color:#00579D;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:.6rem;">02 Estator/rotor</p><p class="font-light" style="color:#64748B;font-size:clamp(.72rem,1vw,.85rem);margin-top:.2rem;">Componentes eletromagnéticos.</p></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(.9rem,1.5vw,1.2rem);"><i data-lucide="cable" style="width:24px;height:24px;color:#00579D;"></i><p class="font-bold" style="color:#00579D;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:.6rem;">03 Bobinagem</p><p class="font-light" style="color:#64748B;font-size:clamp(.72rem,1vw,.85rem);margin-top:.2rem;">Enrolamentos elétricos.</p></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(.9rem,1.5vw,1.2rem);"><i data-lucide="shield" style="width:24px;height:24px;color:#00579D;"></i><p class="font-bold" style="color:#00579D;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:.6rem;">04 Isolação</p><p class="font-light" style="color:#64748B;font-size:clamp(.72rem,1vw,.85rem);margin-top:.2rem;">Impregnação e proteção.</p></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(.9rem,1.5vw,1.2rem);"><i data-lucide="wrench" style="width:24px;height:24px;color:#00579D;"></i><p class="font-bold" style="color:#00579D;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:.6rem;">05 Montagem</p><p class="font-light" style="color:#64748B;font-size:clamp(.72rem,1vw,.85rem);margin-top:.2rem;">Eixo, rolamentos, tampas.</p></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:clamp(.9rem,1.5vw,1.2rem);border-color:#BBDCF7;"><i data-lucide="clipboard-check" style="width:24px;height:24px;color:#0B8A45;"></i><p class="font-bold" style="color:#0B8A45;font-size:clamp(.8rem,1.1vw,.95rem);margin-top:.6rem;">06 Ensaios</p><p class="font-light" style="color:#64748B;font-size:clamp(.72rem,1vw,.85rem);margin-top:.2rem;">Inspeção e conformidade.</p></div>
+    </div>
+    <p class="font-light" style="color:#64748B;font-size:clamp(.88rem,1.3vw,1.05rem);margin-top:1.8rem;max-width:66ch;">Bobinagem, isolação e montagem reduzem falhas e vibração, e definem a eficiência e a vida útil do motor.</p>
+    <p class="font-light" style="color:#94A3B8;font-size:clamp(.72rem,1vw,.82rem);margin-top:.6rem;">Sequência típica simplificada, não exclusiva de uma fábrica ou do modelo W22.</p>
+  </section>
+
+  <!-- SLIDE 11 — ATO 3: SÍNTESE + CTA + ONE MORE THING -->
+  <section class="slide" style="background:#fff;color:#0F172A;">
+    <div class="corner-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg></div>
+    <p class="font-medium" style="color:#00579D;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.75rem,1.2vw,.95rem);margin-bottom:.8rem;">Ato 3 · Síntese</p>
+    <h2 class="font-bold" style="font-size:clamp(1.8rem,3.4vw,2.8rem);margin-bottom:1.8rem;">Três mensagens para levar</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.5vw,2rem);margin-bottom:2rem;">
+      <div style="display:flex;gap:.8rem;align-items:flex-start;"><span class="font-bold" style="color:#00579D;font-size:clamp(1.5rem,2.6vw,2rem);">1</span><p class="font-light" style="color:#334155;font-size:clamp(.95rem,1.4vw,1.1rem);">Escala global sustenta confiança e competitividade.</p></div>
+      <div style="display:flex;gap:.8rem;align-items:flex-start;"><span class="font-bold" style="color:#DE8F03;font-size:clamp(1.5rem,2.6vw,2rem);">2</span><p class="font-light" style="color:#334155;font-size:clamp(.95rem,1.4vw,1.1rem);">O W22 traduz robustez e versatilidade no cotidiano.</p></div>
+      <div style="display:flex;gap:.8rem;align-items:flex-start;"><span class="font-bold" style="color:#754D93;font-size:clamp(1.5rem,2.6vw,2rem);">3</span><p class="font-light" style="color:#334155;font-size:clamp(.95rem,1.4vw,1.1rem);">Eficiência energética é vantagem competitiva real.</p></div>
+    </div>
+    <div style="background:#00579D;border-radius:14px;padding:clamp(1.3rem,2.5vw,2rem);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;">
+      <div>
+        <p class="font-bold" style="color:#fff;font-size:clamp(1.2rem,2.2vw,1.7rem);">Chamada para ação</p>
+        <p class="font-light" style="color:#BBDCF7;font-size:clamp(.9rem,1.4vw,1.1rem);margin-top:.3rem;max-width:52ch;">Priorizar o portfólio de eficiência como eixo de crescimento da área de Motores Comerciais e Appliance.</p>
+      </div>
+      <div style="background:#F0F5FA;border-radius:10px;padding:1rem 1.3rem;max-width:30ch;">
+        <p class="font-semibold" style="color:#976202;font-size:clamp(.72rem,1vw,.85rem);text-transform:uppercase;letter-spacing:.12em;">One more thing</p>
+        <p class="font-medium" style="color:#00579D;font-size:clamp(.95rem,1.4vw,1.15rem);margin-top:.3rem;">Em 2025, cerca de 71% da receita da WEG veio de produtos sustentáveis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 — ENCERRAMENTO -->
+  <section class="slide" style="background:#00447A;color:#fff;align-items:flex-start;">
+    <div style="position:absolute;top:clamp(2rem,5vw,4rem);left:clamp(2rem,5vw,5rem);">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192" style="height:48px;width:auto;"><g fill="#ffffff"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "></polygon><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"></path><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"></path></g></svg>
+    </div>
+    <div style="max-width:72%;">
+      <h2 class="font-bold" style="font-size:clamp(2.4rem,6vw,5rem);line-height:1.05;">Movemos o cotidiano com eficiência</h2>
+      <p class="font-light" style="font-size:clamp(1.1rem,2vw,1.6rem);color:#BBDCF7;margin-top:1.3rem;max-width:50ch;">Do W22 monofásico à plataforma IE5, a WEG transforma motores em vantagem para quem produz e para quem usa.</p>
+    </div>
+    <div style="position:absolute;bottom:clamp(1.8rem,4vw,3rem);left:clamp(2rem,5vw,5rem);right:clamp(2rem,5vw,5rem);">
+      <p class="font-semibold" style="color:#81C3F8;font-size:clamp(.75rem,1.1vw,.9rem);text-transform:uppercase;letter-spacing:.14em;margin-bottom:.5rem;">Fontes</p>
+      <p class="font-light" style="color:#81C3F8;font-size:clamp(.72rem,1vw,.88rem);line-height:1.6;max-width:95ch;">Site institucional e Relações com Investidores da WEG · Catálogo de motores para aplicações comerciais e residenciais · W22 Prime (IE4/IE5), notícia oficial WEG · Investimentos em Manaus (2023) e Linhares (2025) · Relatório Anual Integrado 2025 (receita R$ 40,8 bi). Dados divulgados pela WEG; especificações variam conforme modelo, versão e ano.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Controles de navegação -->
+<div class="no-print" style="position:fixed;bottom:clamp(1rem,2.5vw,1.6rem);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid #E2E8F0;border-radius:999px;padding:.5rem .8rem;box-shadow:0 6px 24px rgba(15,23,42,.12);z-index:50;">
+  <button id="prevBtn" aria-label="Slide anterior" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:#F0F5FA;color:#00579D;border-radius:999px;cursor:pointer;"><i data-lucide="chevron-left" style="width:22px;height:22px;"></i></button>
+  <span id="pager" class="font-semibold" style="color:#334155;font-size:.95rem;min-width:64px;text-align:center;">1 / 12</span>
+  <button id="nextBtn" aria-label="Próximo slide" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:#00579D;color:#fff;border-radius:999px;cursor:pointer;"><i data-lucide="chevron-right" style="width:22px;height:22px;"></i></button>
+</div>
+
+<script>
+(function () {
+  var current = 0;
+
+  function slides() { return document.querySelectorAll('#deck > .slide'); }
+
+  function animateCounters(slide) {
+    var counters = slide.querySelectorAll('[data-count]');
+    counters.forEach(function (el) {
+      var target = parseFloat(el.getAttribute('data-count'));
+      var decimals = (el.getAttribute('data-count').indexOf('.') >= 0) ? 1 : 0;
+      var duration = 900, start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var value = target * progress;
+        el.textContent = decimals ? value.toFixed(1) : Math.round(value);
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = decimals ? target.toFixed(1) : target;
+      }
+      el.textContent = decimals ? '0.0' : '0';
+      requestAnimationFrame(step);
+    });
+  }
+
+  function show(index) {
+    var list = slides();
+    if (list.length === 0) return;
+    if (index < 0) index = 0;
+    if (index > list.length - 1) index = list.length - 1;
+    current = index;
+    list.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+    var pager = document.getElementById('pager');
+    if (pager) pager.textContent = (current + 1) + ' / ' + list.length;
+    var bar = document.getElementById('progressBar');
+    if (bar) bar.style.width = ((current + 1) / list.length * 100) + '%';
+    animateCounters(list[current]);
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+  });
+
+  var touchStartX = 0, touchEndX = 0;
+  document.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    touchEndX = e.changedTouches[0].screenX;
+    var diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 50) { if (diff < 0) next(); else prev(); }
+  }, { passive: true });
+
+  window.addEventListener('beforeprint', function () {
+    slides().forEach(function (s) {
+      s.querySelectorAll('[data-count]').forEach(function (el) {
+        var target = el.getAttribute('data-count');
+        el.textContent = (target.indexOf('.') >= 0) ? parseFloat(target).toFixed(1) : target;
+      });
+    });
+  });
+
+  if (window.lucide) lucide.createIcons();
+  show(0);
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colonização do Brasil</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+  "primary": {
+    "50": "#F0F5FA",
+    "100": "#E2EEF8",
+    "200": "#BBDCF7",
+    "300": "#81C3F8",
+    "400": "#3DA9FF",
+    "500": "#0A92FF",
+    "600": "#007CE0",
+    "700": "#00579D",
+    "800": "#005599",
+    "900": "#00447A"
+  },
+  "secondary": {
+    "50": "#FAF6F0",
+    "100": "#F8F0E2",
+    "200": "#F6E1BC",
+    "300": "#F7CD82",
+    "400": "#FDB93F",
+    "500": "#FCA60D",
+    "600": "#DE8F03",
+    "700": "#FCA304",
+    "800": "#976202",
+    "900": "#794E01"
+  },
+  "tertiary": {
+    "50": "#F5F3F6",
+    "100": "#EEEAF1",
+    "200": "#DACFE2",
+    "300": "#BFAACF",
+    "400": "#A280BC",
+    "500": "#8A5EAB",
+    "600": "#754D93",
+    "700": "#9F7BBA",
+    "800": "#503564",
+    "900": "#402A50"
+  },
+  "positive": {
+    "50": "#EFFEF5",
+    "100": "#D9FFE9",
+    "200": "#7DF8B2",
+    "300": "#7DF8B2",
+    "400": "#3DEB89",
+    "500": "#13CE66",
+    "600": "#09B054",
+    "700": "#0B8A45",
+    "800": "#0F6C39",
+    "900": "#0E5932"
+  },
+  "negative": {
+    "50": "#FFF1F1",
+    "100": "#FFDFDF",
+    "200": "#FFC5C5",
+    "300": "#FF9D9D",
+    "400": "#FF6464",
+    "500": "#FF4949",
+    "600": "#ED1515",
+    "700": "#C80D0D",
+    "800": "#A50F0F",
+    "900": "#881414"
+  },
+  "warning": {
+    "50": "#FFFFE7",
+    "100": "#FEFFC1",
+    "200": "#FFFD86",
+    "300": "#FFF441",
+    "400": "#FFE50D",
+    "500": "#FFD600",
+    "600": "#D19D00",
+    "700": "#A67102",
+    "800": "#89570A",
+    "900": "#74470F"
+  },
+  "info": {
+    "50": "#EBFDFF",
+    "100": "#CDF6FF",
+    "200": "#8AE8FF",
+    "300": "#62DDFE",
+    "400": "#1BC4F5",
+    "500": "#00A7DB",
+    "600": "#0284B8",
+    "700": "#0A6A94",
+    "800": "#125778",
+    "900": "#134766"
+  },
+  "neutral": {
+    "50": "#F8FAFC",
+    "100": "#F1F5F9",
+    "200": "#E2E8F0",
+    "300": "#CBD5E1",
+    "400": "#94A3B8",
+    "500": "#64748B",
+    "600": "#475569",
+    "700": "#334155",
+    "800": "#1E293B",
+    "900": "#0F172A"
+  }
+},
+      fontFamily: { sans: ['Inter', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  html, body { margin: 0; padding: 0; background: #F8FAFC; font-family: 'Inter', sans-serif; overflow: hidden; }
+  #deck { position: relative; width: 100vw; height: 100vh; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 5rem);
+    box-sizing: border-box;
+  }
+  .slide.active { opacity: 1; visibility: visible; }
+  .deck-logo { position: absolute; top: clamp(1.5rem, 3vw, 2.5rem); right: clamp(1.5rem, 3vw, 2.5rem); width: clamp(48px, 5vw, 70px); height: auto; opacity: 0.85; }
+  .deck-logo svg { width: 100%; height: auto; }
+
+  @media print {
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html, body { overflow: visible; }
+    #deck { position: static; width: auto; height: auto; }
+    .slide {
+      position: relative !important;
+      inset: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: 13.333in !important;
+      height: 7.5in !important;
+      break-after: page;
+      page-break-after: always;
+    }
+    .no-print { display: none !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" class="no-print" style="position:fixed;top:0;left:0;height:4px;width:0;background:#00579D;z-index:50;transition:width 0.4s ease;"></div>
+
+<main id="deck">
+
+  <!-- SLIDE 1 — CAPA -->
+  <section class="slide active bg-white">
+    <div class="deck-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg>
+    </div>
+    <div class="max-w-5xl">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold tracking-wide">
+          <i data-lucide="landmark" class="w-4 h-4"></i> 1500 — 1822
+        </span>
+      </div>
+      <h1 class="text-6xl md:text-7xl font-bold text-primary-900 leading-tight tracking-tight">Colonização do Brasil</h1>
+      <p class="mt-6 text-2xl md:text-3xl font-light text-neutral-600 max-w-3xl">Três séculos que moldaram território, economia e sociedade.</p>
+      <div class="mt-12 flex items-center gap-3 text-neutral-500 font-medium">
+        <i data-lucide="calendar-days" class="w-5 h-5 text-primary-700"></i>
+        <span>3 de novembro de 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — AGENDA -->
+  <section class="slide bg-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl w-full mx-auto">
+      <p class="text-primary-700 font-semibold uppercase tracking-widest mb-3">A jornada</p>
+      <h2 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-12">Três forças que construíram o Brasil colonial</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-8 rounded-2xl border border-neutral-200 bg-neutral-50">
+          <div class="w-12 h-12 rounded-xl bg-primary-700 text-white flex items-center justify-center mb-5"><i data-lucide="map" class="w-6 h-6"></i></div>
+          <span class="text-sm font-semibold text-primary-700">01</span>
+          <h3 class="text-2xl font-bold text-neutral-900 mt-1">Ocupar e defender</h3>
+          <p class="mt-3 text-neutral-600 font-light">Da feitoria ao Governo-Geral: garantir a posse do território.</p>
+        </div>
+        <div class="p-8 rounded-2xl border border-neutral-200 bg-neutral-50">
+          <div class="w-12 h-12 rounded-xl bg-secondary-500 text-white flex items-center justify-center mb-5"><i data-lucide="coins" class="w-6 h-6"></i></div>
+          <span class="text-sm font-semibold text-secondary-700">02</span>
+          <h3 class="text-2xl font-bold text-neutral-900 mt-1">Extrair riqueza</h3>
+          <p class="mt-3 text-neutral-600 font-light">Açúcar, trabalho escravizado e ouro movendo a economia.</p>
+        </div>
+        <div class="p-8 rounded-2xl border border-neutral-200 bg-neutral-50">
+          <div class="w-12 h-12 rounded-xl bg-tertiary-600 text-white flex items-center justify-center mb-5"><i data-lucide="expand" class="w-6 h-6"></i></div>
+          <span class="text-sm font-semibold text-tertiary-700">03</span>
+          <h3 class="text-2xl font-bold text-neutral-900 mt-1">Expandir fronteiras</h3>
+          <p class="mt-3 text-neutral-600 font-light">Bandeiras e tratados desenham o mapa do Brasil atual.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — ATO 1: Contexto / Problema -->
+  <section class="slide bg-primary-900 text-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#FFFFFF"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-5xl mx-auto w-full">
+      <p class="text-secondary-400 font-semibold uppercase tracking-widest mb-4">Ato 1 · O ponto de partida</p>
+      <h2 class="text-4xl md:text-6xl font-bold leading-tight">Uma terra ocupada, uma Coroa ausente.</h2>
+      <p class="mt-6 text-xl md:text-2xl font-light text-primary-100 max-w-3xl">Em 1500 o território já era habitado por milhões. Portugal, voltado às Índias, deixou a costa quase sem povoamento — e exposta à cobiça estrangeira.</p>
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <p class="text-5xl font-bold text-white"><span data-count="2">2</span>–<span data-count="5">5</span> mi</p>
+          <p class="mt-2 text-primary-200 font-light">Indígenas no território (Tupi, Macro-Jê e outros)</p>
+        </div>
+        <div>
+          <p class="text-5xl font-bold text-white">14<span data-count="94">94</span></p>
+          <p class="mt-2 text-primary-200 font-light">Tratado de Tordesilhas divide o "novo mundo"</p>
+        </div>
+        <div>
+          <p class="text-5xl font-bold text-white">15<span data-count="00">00</span></p>
+          <p class="mt-2 text-primary-200 font-light">Chegada de Cabral; só escambo de pau-brasil</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — IDEIA 1 -->
+  <section class="slide bg-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-5">Ideia 01 · Governar</span>
+        <h2 class="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight">Para manter a terra, foi preciso administrá-la.</h2>
+        <p class="mt-5 text-lg text-neutral-600 font-light">Diante do fracasso das Capitanias Hereditárias, a Coroa centraliza o poder no Governo-Geral (1549), funda Salvador e apoia os jesuítas.</p>
+      </div>
+      <div class="space-y-4">
+        <div class="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
+          <p class="text-5xl font-bold text-primary-700"><span data-count="15">15</span></p>
+          <p class="text-neutral-700 font-medium">Capitanias doadas a donatários (1534) — a maioria fracassou.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
+          <p class="text-5xl font-bold text-primary-700">15<span data-count="49">49</span></p>
+          <p class="text-neutral-700 font-medium">Governo-Geral: Tomé de Sousa funda Salvador, capital até 1763.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — IDEIA 1 Aprofundamento (antes vs depois) -->
+  <section class="slide bg-neutral-50">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full">
+      <p class="text-primary-700 font-semibold uppercase tracking-widest mb-3">Evidência · modelo de ocupação</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-10">Da gestão privada à administração central</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="p-8 rounded-2xl bg-white border-l-4 border-negative-500 shadow-sm">
+          <div class="flex items-center gap-3 mb-4"><i data-lucide="x-circle" class="w-7 h-7 text-negative-600"></i><h3 class="text-xl font-bold text-neutral-900">Capitanias Hereditárias</h3></div>
+          <ul class="space-y-2 text-neutral-600 font-light">
+            <li>Ocupação financiada pelos donatários</li>
+            <li>Falta de recursos e grande distância</li>
+            <li>Conflitos com povos indígenas</li>
+            <li>Só prosperam São Vicente e Pernambuco</li>
+          </ul>
+        </div>
+        <div class="p-8 rounded-2xl bg-white border-l-4 border-positive-500 shadow-sm">
+          <div class="flex items-center gap-3 mb-4"><i data-lucide="check-circle-2" class="w-7 h-7 text-positive-600"></i><h3 class="text-xl font-bold text-neutral-900">Governo-Geral (1549)</h3></div>
+          <ul class="space-y-2 text-neutral-600 font-light">
+            <li>Administração centralizada pela Coroa</li>
+            <li>Fundação de Salvador, primeira capital</li>
+            <li>Jesuítas: catequese, educação, aldeamentos</li>
+            <li>Tensão com colonos que escravizavam indígenas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — IDEIA 2 -->
+  <section class="slide bg-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-100 text-secondary-800 text-sm font-semibold mb-5">Ideia 02 · Explorar</span>
+        <h2 class="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight">O açúcar fez a economia — o trabalho escravizado a sustentou.</h2>
+        <p class="mt-5 text-lg text-neutral-600 font-light">O sistema de <em>plantation</em> — latifúndio, monocultura e exportação — concentrou-se no Nordeste. A mão de obra foi arrancada à força, primeiro de indígenas, depois de africanos.</p>
+      </div>
+      <div class="p-10 rounded-3xl bg-secondary-50 border border-secondary-200 text-center">
+        <p class="text-neutral-600 font-medium mb-2">Africanos escravizados trazidos ao Brasil</p>
+        <p class="text-7xl font-bold text-secondary-700">≈<span data-count="4.8">4.8</span> mi</p>
+        <p class="mt-3 text-neutral-600 font-light">O maior destino do tráfico atlântico de pessoas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — IDEIA 2 Aprofundamento -->
+  <section class="slide bg-primary-900 text-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#FFFFFF"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full">
+      <p class="text-secondary-400 font-semibold uppercase tracking-widest mb-3">Caso real · Ciclo do ouro</p>
+      <h2 class="text-3xl md:text-5xl font-bold leading-tight mb-10">Do açúcar ao ouro: o eixo econômico migra para o Sudeste.</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-7 rounded-2xl bg-primary-800/60 border border-primary-700">
+          <i data-lucide="pickaxe" class="w-8 h-8 text-secondary-400 mb-3"></i>
+          <p class="text-4xl font-bold">~16<span data-count="93">93</span></p>
+          <p class="mt-2 text-primary-100 font-light">Ouro descoberto em Minas Gerais; urbanização do interior.</p>
+        </div>
+        <div class="p-7 rounded-2xl bg-primary-800/60 border border-primary-700">
+          <i data-lucide="scale" class="w-8 h-8 text-secondary-400 mb-3"></i>
+          <p class="text-4xl font-bold">1/<span data-count="5">5</span></p>
+          <p class="mt-2 text-primary-100 font-light">O "quinto" e as derramas: tributo cobrado nas Casas de Fundição.</p>
+        </div>
+        <div class="p-7 rounded-2xl bg-primary-800/60 border border-primary-700">
+          <i data-lucide="building-2" class="w-8 h-8 text-secondary-400 mb-3"></i>
+          <p class="text-4xl font-bold">17<span data-count="63">63</span></p>
+          <p class="mt-2 text-primary-100 font-light">Capital transferida de Salvador para o Rio de Janeiro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — IDEIA 3 -->
+  <section class="slide bg-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tertiary-100 text-tertiary-800 text-sm font-semibold mb-5">Ideia 03 · Expandir</span>
+        <h2 class="text-4xl md:text-5xl font-bold text-neutral-900 leading-tight">As bandeiras ultrapassaram Tordesilhas — e o mapa mudou.</h2>
+        <p class="mt-5 text-lg text-neutral-600 font-light">Expedições paulistas em busca de metais e cativos ampliaram as fronteiras para o oeste. O Tratado de Madri (1750) reconheceu a ocupação real pelo princípio do <em>uti possidetis</em>.</p>
+      </div>
+      <div class="space-y-4">
+        <div class="p-6 rounded-2xl bg-tertiary-50 border border-tertiary-200 flex items-center gap-4">
+          <i data-lucide="footprints" class="w-9 h-9 text-tertiary-600 shrink-0"></i>
+          <p class="text-neutral-700 font-medium">Bandeiras (séc. XVII) empurram as fronteiras muito além da linha de 1494.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-tertiary-50 border border-tertiary-200 flex items-center gap-4">
+          <i data-lucide="file-signature" class="w-9 h-9 text-tertiary-600 shrink-0"></i>
+          <p class="text-neutral-700 font-medium">Tratado de Madri (17<span data-count="50">50</span>) define contornos próximos do Brasil atual.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 — IDEIA 3 Aprofundamento: resistências e invasões -->
+  <section class="slide bg-neutral-50">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full">
+      <p class="text-primary-700 font-semibold uppercase tracking-widest mb-3">Evidência · disputa e resistência</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-10">A posse foi contestada por dentro e por fora.</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-7 rounded-2xl bg-white border border-neutral-200 shadow-sm">
+          <i data-lucide="ship" class="w-8 h-8 text-info-600 mb-3"></i>
+          <h3 class="text-lg font-bold text-neutral-900">Invasões estrangeiras</h3>
+          <p class="mt-2 text-neutral-600 font-light">Franceses no Rio e Maranhão; holandeses no Nordeste (1630–1654, com Nassau).</p>
+        </div>
+        <div class="p-7 rounded-2xl bg-white border border-neutral-200 shadow-sm">
+          <i data-lucide="flame" class="w-8 h-8 text-negative-600 mb-3"></i>
+          <h3 class="text-lg font-bold text-neutral-900">Resistência negra e indígena</h3>
+          <p class="mt-2 text-neutral-600 font-light">Quilombo de Palmares (Zumbi) e a Confederação dos Tamoios.</p>
+        </div>
+        <div class="p-7 rounded-2xl bg-white border border-neutral-200 shadow-sm">
+          <i data-lucide="megaphone" class="w-8 h-8 text-secondary-600 mb-3"></i>
+          <h3 class="text-lg font-bold text-neutral-900">Revoltas e conjurações</h3>
+          <p class="mt-2 text-neutral-600 font-light">Beckman, Emboabas, Mascates e as Conjurações Mineira (1789) e Baiana (1798).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — ATO 3: Síntese + chamada à ação -->
+  <section class="slide bg-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-6xl mx-auto w-full">
+      <p class="text-primary-700 font-semibold uppercase tracking-widest mb-3">Ato 3 · O que levar</p>
+      <h2 class="text-3xl md:text-5xl font-bold text-neutral-900 mb-10">Três mensagens para a tomada de decisão.</h2>
+      <div class="grid md:grid-cols-3 gap-6 mb-10">
+        <div class="p-7 rounded-2xl bg-primary-700 text-white">
+          <p class="text-sm font-semibold text-primary-100">01 · Governar</p>
+          <p class="mt-2 text-xl font-bold">Instituições fortes garantiram a posse do território.</p>
+        </div>
+        <div class="p-7 rounded-2xl bg-secondary-500 text-white">
+          <p class="text-sm font-semibold text-secondary-50">02 · Explorar</p>
+          <p class="mt-2 text-xl font-bold">A riqueza nasceu de um modelo exportador e escravista.</p>
+        </div>
+        <div class="p-7 rounded-2xl bg-tertiary-600 text-white">
+          <p class="text-sm font-semibold text-tertiary-50">03 · Expandir</p>
+          <p class="mt-2 text-xl font-bold">A ação no terreno, não os tratados, desenhou o mapa.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
+        <i data-lucide="target" class="w-7 h-7 text-primary-700 shrink-0 mt-1"></i>
+        <p class="text-lg text-neutral-700 font-medium">Chamada à ação: ler o presente à luz dessas heranças — concentração de terra, desigualdade e dependência de commodities — para decidir com perspectiva histórica.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 — ONE MORE THING -->
+  <section class="slide bg-primary-900 text-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#FFFFFF"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-4xl mx-auto w-full text-center">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-500 text-white text-sm font-semibold mb-8"><i data-lucide="sparkles" class="w-4 h-4"></i> One more thing</span>
+      <h2 class="text-4xl md:text-6xl font-bold leading-tight">A colônia terminou pela porta dos fundos da Europa.</h2>
+      <p class="mt-8 text-xl md:text-2xl font-light text-primary-100">Em 1808, fugindo de Napoleão, a família real portuguesa transferiu a sede do império para o Rio. A colônia virou centro do próprio reino — e o caminho para 1822 estava aberto.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 — ENCERRAMENTO -->
+  <section class="slide bg-white">
+    <div class="deck-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#0064A6"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg></div>
+    <div class="max-w-5xl mx-auto w-full">
+      <h2 class="text-4xl md:text-6xl font-bold text-primary-900 leading-tight">Três séculos de colonização ainda explicam o Brasil de hoje.</h2>
+      <p class="mt-6 text-xl font-light text-neutral-600">Território, economia e sociedade: o passado colonial segue sendo chave de leitura do presente.</p>
+      <div class="mt-12 pt-8 border-t border-neutral-200">
+        <p class="text-sm font-semibold text-neutral-500 uppercase tracking-widest mb-3">Fontes das informações</p>
+        <p class="text-neutral-600 font-light leading-relaxed">Síntese baseada no briefing fornecido e em conhecimento histórico consolidado: Tratado de Tordesilhas (1494), Capitanias Hereditárias (1534), Governo-Geral (1549), ciclos do açúcar e do ouro, bandeiras e Tratado de Madri (1750), vinda da família real (1808). Estimativas demográficas e do tráfico atlântico apoiam-se em intervalos amplamente citados na literatura histórica.</p>
+        <p class="mt-4 text-sm text-neutral-400 italic">Nota: dados demográficos (2–5 milhões de indígenas) e de tráfico (~4,8 milhões) são estimativas; esta informação não pôde ser totalmente confirmada no momento da geração.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- CONTROLES -->
+<div class="no-print" style="position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:1rem;padding:1rem;z-index:50;">
+  <button id="prevBtn" aria-label="Anterior" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;border:1px solid #E2E8F0;background:#fff;color:#00579D;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+  </button>
+  <span id="pagination" style="font-size:0.95rem;font-weight:600;color:#334155;min-width:64px;text-align:center;">1 / 12</span>
+  <button id="nextBtn" aria-label="Próximo" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;border:1px solid #00579D;background:#00579D;color:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.12);">
+    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+  </button>
+</div>
+
+<script>
+(function () {
+  var current = 0;
+
+  function slides() { return document.querySelectorAll('#deck > .slide'); }
+
+  function animateCounters(slide) {
+    var counters = slide.querySelectorAll('[data-count]');
+    counters.forEach(function (el) {
+      var target = parseFloat(el.getAttribute('data-count'));
+      var isFloat = String(el.getAttribute('data-count')).indexOf('.') !== -1;
+      var raw = el.getAttribute('data-count');
+      var hasLeadingZero = /^0\d/.test(raw);
+      var duration = 900;
+      var start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        var val = target * eased;
+        if (isFloat) {
+          el.textContent = val.toFixed(1);
+        } else if (hasLeadingZero) {
+          el.textContent = String(Math.round(val)).padStart(raw.length, '0');
+        } else {
+          el.textContent = Math.round(val);
+        }
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = raw;
+      }
+      el.textContent = isFloat ? '0.0' : (hasLeadingZero ? '0'.repeat(raw.length) : '0');
+      requestAnimationFrame(step);
+    });
+  }
+
+  function show(index) {
+    var all = slides();
+    if (all.length === 0) return;
+    if (index < 0) index = 0;
+    if (index > all.length - 1) index = all.length - 1;
+    current = index;
+    all.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+
+    var pag = document.getElementById('pagination');
+    if (pag) pag.textContent = (current + 1) + ' / ' + all.length;
+
+    var bar = document.getElementById('progress-bar');
+    if (bar) bar.style.width = (((current + 1) / all.length) * 100) + '%';
+
+    animateCounters(all[current]);
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  var nextBtn = document.getElementById('nextBtn');
+  var prevBtn = document.getElementById('prevBtn');
+  if (nextBtn) nextBtn.addEventListener('click', next);
+  if (prevBtn) prevBtn.addEventListener('click', prev);
+
+  var touchStartX = 0;
+  var touchEndX = 0;
+  document.addEventListener('touchstart', function (e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    touchEndX = e.changedTouches[0].screenX;
+    var diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 50) { if (diff < 0) next(); else prev(); }
+  }, { passive: true });
+
+  window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      el.textContent = el.getAttribute('data-count');
+    });
+  });
+
+  function init() {
+    if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
+    show(0);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+</body>
+</html>

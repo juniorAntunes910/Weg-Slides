@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="ssw-token" content="__SSW_TOKEN__">
+<title>Slide Studio WEG</title>
+<link rel="icon" type="image/png" sizes="16x16" href="app/icons/icon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="app/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="app/icons/icon-48.png">
+<link rel="icon" type="image/png" sizes="64x64" href="app/icons/icon-64.png">
+<link rel="icon" type="image/png" sizes="192x192" href="app/icons/icon-192.png">
+<link rel="apple-touch-icon" href="app/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app/styles.css">
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ===================== TOPO ===================== -->
+  <header class="topbar">
+    <div class="brand" role="button" tabindex="0" title="Voltar ao menu principal" aria-label="Voltar ao menu principal">
+      <div class="brand-logo" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5991 4192"><g fill="#fff"><polygon points="461,466 461,2795 922,2795 922,932 1383,932 1383,2795 1844,2795 1844,932 2304,932 2304,3261 0,3261 0,0 5991,0 5991,466 "/><path d="M4148 2329l0 -1397 -1383 0 0 2329 1383 0 0 -466 -922 0 0 -466 922 0zm-461 -466l-461 0 0 -466 461 0 0 466z"/><path d="M5991 932l-1382 0 0 2329 922 0 0 466 -5531 0 0 465 5991 0 0 -3260zm-461 1863l-461 0 0 -1398 461 0 0 1398z"/></g></svg>
+      </div>
+      <div class="brand-name">Slide Studio <b>WEG</b><small>Apresentações com IA</small></div>
+    </div>
+    <button class="tb-btn" id="fileMenuBtn">Arquivo <i data-lucide="chevron-down"></i></button>
+    <button class="tb-btn" id="homeBtn" title="Início"><i data-lucide="layout-grid"></i></button>
+    <div class="tb-sep"></div>
+    <button class="tb-btn icon" id="undoBtn" title="Desfazer (Ctrl+Z)" disabled><i data-lucide="undo-2"></i></button>
+    <button class="tb-btn icon" id="redoBtn" title="Refazer (Ctrl+Y)" disabled><i data-lucide="redo-2"></i></button>
+    <span class="save-pill" id="savePill"><i data-lucide="cloud"></i><span>Pronto</span></span>
+    <div class="title-wrap"><input class="title-input" id="titleInput" placeholder="Apresentação sem título" spellcheck="false" maxlength="120" aria-label="Título da apresentação"></div>
+    <div class="tb-right">
+      <span class="conn" id="connInfo" title=""><i class="dot" id="connDot"></i><span id="connText">Verificando…</span></span>
+      <button class="kiro-usage hidden" id="kiroUsage" type="button" aria-label="Uso dos créditos do Kiro"><span class="ku-bar"><i id="kiroUsageFill"></i></span><span id="kiroUsageText">Kiro…</span></button>
+      <button class="btn-ai" id="aiBtn"><i data-lucide="sparkles"></i>Gerar com IA</button>
+      <button class="btn-ghost-w" id="presentBtn" disabled><i data-lucide="play"></i><span>Apresentar</span></button>
+      <div class="split">
+        <button class="btn-white" id="pdfBtn" disabled><i data-lucide="file-down"></i><span>Exportar PDF</span></button>
+        <button class="btn-white" id="exportMenuBtn" disabled title="Mais opções de exportação" aria-label="Mais opções de exportação"><i data-lucide="chevron-down"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== TRILHO ===================== -->
+  <nav class="rail" aria-label="Ferramentas">
+    <button class="rail-btn ai" data-panel="gerar"><span class="ic"><i data-lucide="sparkles"></i></span>Gerar<span class="rail-badge hidden" id="attachBadge">0</span></button>
+    <button class="rail-btn" data-panel="layouts"><span class="ic"><i data-lucide="layout-template"></i></span>Layouts</button>
+    <button class="rail-btn" data-panel="elementos"><span class="ic"><i data-lucide="shapes"></i></span>Elementos</button>
+    <button class="rail-btn" data-panel="texto"><span class="ic"><i data-lucide="type"></i></span>Texto</button>
+    <button class="rail-btn" data-panel="uploads"><span class="ic"><i data-lucide="cloud-upload"></i></span>Uploads</button>
+    <button class="rail-btn" data-panel="estilo"><span class="ic"><i data-lucide="palette"></i></span>Estilo</button>
+    <button class="rail-btn" data-panel="projetos"><span class="ic"><i data-lucide="folder-open"></i></span>Projetos</button>
+    <div class="rail-spacer"></div>
+    <button class="rail-btn" id="shortcutsBtn"><span class="ic"><i data-lucide="keyboard"></i></span>Atalhos</button>
+  </nav>
+
+  <!-- ===================== PAINEL ===================== -->
+  <aside class="panel" id="panel">
+    <div class="panel-head"><h2 id="panelTitle">Gerar com IA</h2>
+      <button class="ctx-btn" id="panelClose" title="Recolher painel" aria-label="Recolher painel"><i data-lucide="panel-left-close"></i></button>
+    </div>
+    <div class="panel-body" id="panelBody">
+
+      <!-- GERAR -->
+      <div data-pane="gerar">
+        <div class="banner info" id="engineBanner"><i data-lucide="info"></i><span>Verificando o Kiro…</span></div>
+        <label class="field"><span>Tema da apresentação <em>obrigatório</em></span>
+          <textarea class="textarea" id="themeInput" rows="3" placeholder="Ex.: Eficiência energética com motores W22 — economia no chão de fábrica"></textarea></label>
+        <label class="field"><span>Público-alvo</span>
+          <input class="input" id="audienceInput" placeholder="Ex.: diretoria industrial, equipe comercial"></label>
+        <label class="field"><span>Contexto e recados <em>opcional</em></span>
+          <textarea class="textarea" id="contextInput" rows="3" placeholder="Números, tópicos obrigatórios, restrições…"></textarea></label>
+
+        <div class="sec">
+          <div class="sec-title">Documentos de apoio <button id="clearFiles" class="hidden">Limpar</button></div>
+          <div class="dz" id="docDrop" tabindex="0" role="button" aria-label="Importar documentos">
+            <div class="dz-ic"><i data-lucide="file-up"></i></div>
+            <strong>Arraste arquivos ou clique para importar</strong>
+            <small>A IA lê o conteúdo e monta os slides a partir dele</small>
+            <div class="chips"><span class="chip">PDF</span><span class="chip">DOCX</span><span class="chip">PPTX</span><span class="chip">XLSX</span><span class="chip">ODT</span><span class="chip">RTF</span><span class="chip">TXT · MD · CSV</span><span class="chip">HTML</span></div>
+          </div>
+          <ul class="files" id="fileList"></ul>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Estrutura</div>
+          <label class="field"><span>Quantidade de slides <em id="slideCountLabel">12</em></span>
+            <input type="range" class="range" id="slideCount" min="6" max="20" value="12"></label>
+          <div class="row2">
+            <label class="field"><span>Idioma</span>
+              <select class="select" id="langSelect"><option value="pt-BR">Português</option><option value="en">English</option><option value="es">Español</option></select></label>
+            <label class="field"><span>Tom de voz</span>
+              <select class="select" id="toneSelect"><option>Corporativo</option><option>Executivo</option><option>Técnico</option><option>Inspirador</option><option>Comercial</option></select></label>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Motor de IA</div>
+          <div class="seg" id="engineSeg">
+            <button data-engine="kiro"><i data-lucide="bot"></i>Kiro</button>
+            <button data-engine="api"><i data-lucide="key-round"></i>API</button>
+            <button data-engine="copy"><i data-lucide="clipboard-copy"></i>Prompt</button>
+          </div>
+          <div id="apiBox" class="hidden" style="margin-top:12px">
+            <div class="row2">
+              <label class="field"><span>Provedor</span>
+                <select class="select" id="providerSelect"><option value="gemini">Google Gemini</option><option value="anthropic">Anthropic</option><option value="openai">OpenAI</option></select></label>
+              <label class="field"><span>Modelo</span><input class="input" id="modelInput" list="modelList" autocomplete="off" spellcheck="false"><datalist id="modelList"></datalist></label>
+            </div>
+            <label class="field"><span>Chave de API <a class="link" id="apiHelpLink" target="_blank" rel="noopener" href="https://aistudio.google.com/app/apikey">obter chave</a></span>
+              <input class="input" id="apiKeyInput" type="password" autocomplete="off" placeholder="Cole a chave"></label>
+            <div class="key-row"><span class="hint" id="keyStatus"></span><button class="link hidden" id="keyRemove" type="button">Remover chave</button></div>
+            <p class="hint" id="modelStatus"></p>
+          </div>
+          <p class="hint" id="engineHint"></p>
+        </div>
+
+        <div class="sec">
+          <button class="btn-gen" id="generateBtn"><i data-lucide="sparkles"></i>Gerar apresentação</button>
+          <p class="hint" style="text-align:center">Cores, fonte, logo e componentes vêm da aba <a href="#" class="link" data-goto="estilo">Estilo</a>.</p>
+        </div>
+      </div>
+
+      <!-- LAYOUTS -->
+      <div data-pane="layouts" class="hidden">
+        <div class="sec">
+          <div class="sec-title">Adicionar slide com layout</div>
+          <div class="grid-layouts" id="layoutGrid"></div>
+          <p class="hint">O slide entra logo depois do slide atual. Todos os elementos ficam livres para mover, redimensionar e editar.</p>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Slide atual</div>
+          <div class="row2">
+            <button class="btn btn-outline" data-act="dupSlide"><i data-lucide="copy-plus"></i>Duplicar</button>
+            <button class="btn btn-danger" data-act="delSlide"><i data-lucide="trash-2"></i>Excluir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ELEMENTOS -->
+      <div data-pane="elementos" class="hidden">
+        <div class="sec">
+          <div class="sec-title">Formas</div>
+          <div class="grid-tiles" id="shapeGrid"></div>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Ícones <span id="iconCount" style="text-transform:none;letter-spacing:0;font-weight:500"></span></div>
+          <div class="search"><i data-lucide="search"></i><input class="input" id="iconSearch" placeholder="Buscar ícone (ex.: motor, energia, gráfico)"></div>
+          <div class="banner info hidden" id="iconReplaceBanner"><i data-lucide="replace"></i><span>Escolha o novo ícone para substituir o selecionado. <a href="#" class="link" id="iconReplaceCancel">Cancelar</a></span></div>
+          <div class="grid-icons" id="iconGrid"></div>
+          <p class="hint">Clique para inserir ou arraste para o slide.</p>
+        </div>
+      </div>
+
+      <!-- TEXTO -->
+      <div data-pane="texto" class="hidden">
+        <div class="sec">
+          <button class="btn-gen" data-text="heading" style="height:44px;margin-bottom:14px"><i data-lucide="plus"></i>Adicionar caixa de texto</button>
+          <div class="sec-title">Estilos de texto</div>
+          <button class="text-btn t1" data-text="heading">Adicionar um título</button>
+          <button class="text-btn t2" data-text="subheading">Adicionar um subtítulo</button>
+          <button class="text-btn t3" data-text="body">Adicionar um pouco de texto ao corpo</button>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Destaques</div>
+          <button class="text-btn" data-text="number" style="font-size:30px;font-weight:800;color:var(--primary-700)">85%</button>
+          <button class="text-btn" data-text="label"><span style="background:var(--secondary-100);color:#96410A;padding:4px 12px;border-radius:999px;font-weight:600;font-size:12px">Etiqueta de destaque</span></button>
+        </div>
+        <p class="hint">Dica: dê duplo clique em qualquer texto do slide para editar. Selecione palavras para aplicar negrito, cor ou tamanho só nelas.</p>
+      </div>
+
+      <!-- UPLOADS -->
+      <div data-pane="uploads" class="hidden">
+        <div class="dz" id="imgDrop" tabindex="0" role="button" aria-label="Enviar imagens">
+          <div class="dz-ic"><i data-lucide="image-up"></i></div>
+          <strong>Enviar imagens</strong>
+          <small>PNG, JPG, WEBP, SVG, GIF — redimensionadas automaticamente</small>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Importar</div>
+          <button class="choice" data-act="pdfSlides"><span class="ci" style="background:#FFF1F1;color:#C80D0D"><i data-lucide="file-image"></i></span><span><strong>PDF como slides</strong><span>Cada página vira um slide editável (imagem de fundo + elementos por cima).</span></span></button>
+          <button class="choice" data-act="openHtml"><span class="ci" style="background:var(--primary-50);color:var(--primary-700)"><i data-lucide="file-code-2"></i></span><span><strong>Apresentação HTML</strong><span>Abra um presentation.html gerado antes para continuar editando.</span></span></button>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Suas imagens</div>
+          <div class="grid-uploads" id="uploadGrid"></div>
+          <p class="hint" id="uploadEmpty">As imagens enviadas aparecem aqui. Clique para inserir ou arraste para o slide.</p>
+        </div>
+      </div>
+
+      <!-- ESTILO -->
+      <div data-pane="estilo" class="hidden">
+        <div class="sec">
+          <div class="sec-title">Paleta</div>
+          <div class="presets" id="presetGrid"></div>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Cores da marca</div>
+          <div id="colorRows"></div>
+          <p class="hint">A escala 50–900 é gerada automaticamente. Sucesso, erro, alerta e informação seguem o padrão WEG.</p>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Tipografia</div>
+          <select class="select" id="fontSelect"></select>
+          <div id="fontPreview" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--soft)">
+            <div style="font-size:20px;font-weight:700;color:var(--primary-700)">Título da apresentação</div>
+            <div style="font-size:13px;color:var(--ink-3);margin-top:3px">Texto de apoio com hierarquia clara.</div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Logo</div>
+          <div class="seg" id="logoSeg"><button data-logo="weg">Logo WEG</button><button data-logo="custom">SVG próprio</button></div>
+          <div id="logoUpload" class="hidden" style="margin-top:10px">
+            <button class="btn btn-outline btn-block" id="logoPick"><i data-lucide="upload"></i>Escolher SVG (até 50 KB)</button>
+            <p class="hint" id="logoStatus"></p>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sec-title">Componentes da apresentação</div>
+          <label class="check"><input type="checkbox" class="comp" value="progressbar"><i data-lucide="gauge"></i>Barra de progresso no topo</label>
+          <label class="check"><input type="checkbox" class="comp" value="pagination"><i data-lucide="chevrons-left-right"></i>Paginação e setas</label>
+          <label class="check"><input type="checkbox" class="comp" value="swipe"><i data-lucide="move-horizontal"></i>Swipe no celular</label>
+          <label class="check"><input type="checkbox" class="comp" value="darkmode"><i data-lucide="moon"></i>Modo claro/escuro</label>
+          <label class="check"><input type="checkbox" class="comp" value="counters"><i data-lucide="hash"></i>Números animados</label>
+          <label class="check"><input type="checkbox" class="comp" value="timeline"><i data-lucide="milestone"></i>Timeline</label>
+          <label class="check"><input type="checkbox" class="comp" value="compareCards"><i data-lucide="columns-2"></i>Cards comparativos</label>
+        </div>
+        <div class="sec">
+          <button class="btn btn-primary btn-block btn-lg" id="applyThemeBtn" disabled><i data-lucide="wand-sparkles"></i>Aplicar paleta e fonte ao design aberto</button>
+          <p class="hint">Novas gerações já usam este estilo. O botão acima recolore a apresentação aberta.</p>
+        </div>
+      </div>
+
+      <!-- PROJETOS -->
+      <div data-pane="projetos" class="hidden">
+        <div class="row2" style="margin-bottom:14px">
+          <button class="btn btn-primary" data-act="newBlank"><i data-lucide="plus"></i>Em branco</button>
+          <button class="btn btn-outline" data-act="importAny"><i data-lucide="upload"></i>Importar</button>
+        </div>
+        <div class="panel-proj" id="panelProjects"></div>
+      </div>
+    </div>
+  </aside>
+  <button class="panel-collapse hidden" id="panelOpen" title="Abrir painel" aria-label="Abrir painel"><i data-lucide="chevron-right"></i></button>
+
+  <!-- ===================== ÁREA PRINCIPAL ===================== -->
+  <main class="main" id="main">
+    <div class="ctxbar" id="ctxbar"></div>
+    <div class="stage" id="stage">
+      <div class="stage-inner" id="stageInner">
+        <div class="page-head" id="pageHead">
+          <div class="ph-title"><span class="ph-num" id="phNum">1</span><span id="phLabel">de 1</span></div>
+          <div class="ph-actions">
+            <button data-act="slideUp" title="Mover para a esquerda"><i data-lucide="chevron-left"></i></button>
+            <button data-act="slideDown" title="Mover para a direita"><i data-lucide="chevron-right"></i></button>
+            <button data-act="dupSlide" title="Duplicar slide"><i data-lucide="copy-plus"></i></button>
+            <button data-act="delSlide" title="Excluir slide"><i data-lucide="trash-2"></i></button>
+            <button data-act="addSlide" title="Adicionar slide"><i data-lucide="file-plus-2"></i></button>
+          </div>
+        </div>
+        <div id="pageHost"></div>
+      </div>
+    </div>
+    <div class="strip"><div class="strip-scroll" id="filmstrip"><button class="fs-add" id="fsAdd" title="Adicionar slide" aria-label="Adicionar slide"><i data-lucide="plus"></i></button></div></div>
+    <div class="statusbar">
+      <button class="sb-btn" id="sbSlides"><i data-lucide="gallery-horizontal-end"></i><span id="sbSlidesText">0 slides</span></button>
+      <span id="sbHint">Duplo clique edita o texto · arraste para mover · Shift mantém proporção</span>
+      <div class="zoom">
+        <button class="sb-btn" id="zoomOut" title="Diminuir zoom"><i data-lucide="minus"></i></button>
+        <input type="range" id="zoomRange" min="10" max="200" value="60" aria-label="Zoom">
+        <button class="sb-btn" id="zoomIn" title="Aumentar zoom"><i data-lucide="plus"></i></button>
+        <span class="zv" id="zoomValue">60%</span>
+        <button class="sb-btn" id="zoomFit" title="Ajustar à tela"><i data-lucide="scan"></i>Ajustar</button>
+        <button class="sb-btn" id="fullBtn" title="Apresentar em tela cheia"><i data-lucide="maximize"></i></button>
+      </div>
+    </div>
+
+    <!-- INÍCIO -->
+    <section class="home" id="home">
+      <div class="home-inner">
+        <div class="hero">
+          <h1><span style="font-weight:300">Do documento ao slide,</span> <span class="grad">em minutos.</span></h1>
+          <p>Descreva o tema ou anexe um documento. A IA monta os slides no padrão WEG e você edita tudo no próprio slide.</p>
+          <div class="prompt-box">
+            <textarea id="homePrompt" rows="2" placeholder="Sobre o que é a sua apresentação?"></textarea>
+            <div class="prompt-actions">
+              <button class="pa-chip" id="homeAttach"><i data-lucide="paperclip"></i><span id="homeAttachText">Anexar documentos</span></button>
+              <button class="pa-chip" id="homeSlides"><i data-lucide="gallery-vertical-end"></i><span id="homeSlidesText">12 slides</span></button>
+              <button class="pa-chip" data-goto="estilo"><i data-lucide="palette"></i>Estilo</button>
+              <button class="btn-gen" id="homeGenerate"><i data-lucide="sparkles"></i>Gerar</button>
+            </div>
+          </div>
+          <div class="suggestions" id="suggestions"></div>
+          <div class="quick">
+            <span class="quick-label">ou comece</span>
+            <button class="qlink" data-act="newBlank"><i data-lucide="square-plus"></i>Em branco</button>
+            <button class="qlink" data-act="importAny"><i data-lucide="file-up"></i>Importar arquivo</button>
+            <button class="qlink" data-act="openHtml"><i data-lucide="file-code-2"></i>Abrir HTML</button>
+          </div>
+        </div>
+        <div class="recent-head"><h3>Projetos recentes</h3><button class="link" data-goto="projetos">Ver todos</button></div>
+        <div class="proj-grid" id="recentGrid"></div>
+      </div>
+    </section>
+
+    <!-- GERAÇÃO -->
+    <section class="gen hidden" id="gen">
+      <div class="gen-card">
+        <div class="orb"><i data-lucide="sparkles"></i></div>
+        <h3 id="genTitle">Criando sua apresentação</h3>
+        <p class="gsub" id="genSub"></p>
+        <div class="steps" id="genSteps"></div>
+        <div class="skel" id="genSkel"></div>
+        <div class="gen-log" id="genLog"></div>
+        <div class="gen-foot"><span id="genTime">0:00</span><button class="btn btn-outline" id="genCancel"><i data-lucide="x"></i>Cancelar</button></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<input type="file" id="docPicker" class="hidden" multiple>
+<input type="file" id="imgPicker" class="hidden" multiple accept="image/*,.svg">
+<input type="file" id="anyPicker" class="hidden" multiple>
+<input type="file" id="htmlPicker" class="hidden" accept=".html,.htm">
+<input type="file" id="pdfPicker" class="hidden" accept=".pdf,application/pdf">
+<input type="file" id="logoPicker" class="hidden" accept=".svg,image/svg+xml">
+<input type="file" id="replaceImgPicker" class="hidden" accept="image/*,.svg">
+
+<script src="app/vendor/lucide.min.js"></script>
+<script src="app/palette.js"></script>
+<script src="app/ai.js"></script>
+<script src="app/prompt.js"></script>
+<script src="app/importers.js"></script>
+<script src="app/deck.js"></script>
+<script src="app/runtime.js"></script>
+<script src="app/editor.js"></script>
+<script src="app/ui.js"></script>
+<script src="app/toolbar.js"></script>
+<script src="app/app.js"></script>
+<script src="app/flows.js"></script>
+</body>
+</html>
